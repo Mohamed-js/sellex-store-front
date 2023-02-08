@@ -78,6 +78,7 @@
   align-items: center;
   position: relative;
   padding: 4rem 0;
+  font-size: calc(0.9rem + 6vw);
 }
 
 .center::before {
@@ -97,10 +98,11 @@
 
 .center::before,
 .center::after {
-  content: '';
-  left: 50%;
+  content: "";
+  left: 60%;
+  top: -7px;
   position: absolute;
-  filter: blur(45px);
+  filter: blur(84px);
   transform: translateZ(0);
 }
 
@@ -113,19 +115,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75px;
-  height: 75px;
+  width: 15vw;
+  height: 6vw;
   padding: 25px 10px;
   margin-left: 16px;
   transform: translateZ(0);
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 0px 2px 8px -1px #0000001a;
+  font-size: calc(0.3rem + 3vw);
 }
 
 .thirteen::before,
 .thirteen::after {
-  content: '';
+  content: "";
   position: absolute;
   z-index: -1;
 }
