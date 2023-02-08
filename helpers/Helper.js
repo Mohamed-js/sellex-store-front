@@ -1,4 +1,5 @@
-const host = "http://localhost:3001";
+// const host = "http://localhost:3001";
+const host = "https://sellex.onrender.com/";
 
 export const getStore = async () => {
   const res = await fetch(host + "/api/v1/stores/khaby");
