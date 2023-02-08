@@ -7,8 +7,8 @@ export const getStore = async () => {
   return data;
 };
 
-export const getProduct = async (id, store) => {
-  const res = await fetch(host + `/api/v1/products/${id}?store=${store}`);
+export const getProduct = async (id) => {
+  const res = await fetch(host + `/api/v1/products/${id}`);
   const data = await res.json();
   return data;
 };
