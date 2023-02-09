@@ -15,7 +15,8 @@ export default function Store({ store, products, aboutRef, contactRef }) {
       block: "start",
     });
   };
-
+  console.log(store);
+  console.log(products);
   return (
     <div>
       <Head>

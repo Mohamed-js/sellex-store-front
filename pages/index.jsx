@@ -39,7 +39,11 @@ export default function Home({ store, products }) {
     console.log(store);
     return (
       <>
-        <Navbar aboutScroll={aboutScroll} contactScroll={contactScroll} />
+        <Navbar
+          aboutScroll={aboutScroll}
+          contactScroll={contactScroll}
+          store={store}
+        />
         <Store
           store={store}
           products={products}
