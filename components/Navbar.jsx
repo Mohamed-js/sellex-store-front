@@ -4,8 +4,8 @@ import Link from "next/link";
 const Navbar = ({ aboutScroll, contactScroll }) => {
   return (
     <div>
-      <div className="flex justify-between h-20 items-center mx-auto max-w-6xl">
-        <div className="flex lg:justify-between items-center flex-1">
+      <div className="flex justify-between h-20 items-center">
+        <div className="flex items-center flex-1">
           <div className="relative w-10 h-10 m-3 mx-4">
             <Image
               alt="Logo"
@@ -19,7 +19,7 @@ const Navbar = ({ aboutScroll, contactScroll }) => {
 
           <ul className="sm:flex text-gray-700 pr-2 hidden">
             <Link href="#">
-              <li className="flex items-end mr-1">
+              <li className="flex items-end mr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -38,7 +38,7 @@ const Navbar = ({ aboutScroll, contactScroll }) => {
               </li>
             </Link>
             <a onClick={aboutScroll}>
-              <li className="flex items-end mr-1">
+              <li className="flex items-end mr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -58,7 +58,7 @@ const Navbar = ({ aboutScroll, contactScroll }) => {
             </a>
 
             <a onClick={contactScroll}>
-              <li className="flex items-end mr-1">
+              <li className="flex items-end mr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
