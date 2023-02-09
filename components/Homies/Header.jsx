@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Header({ scrollHandler }) {
+export default function Header({ scrollHandler, store }) {
   return (
     <header className="relative">
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gray-100" />
@@ -10,16 +10,20 @@ export default function Header({ scrollHandler }) {
             <Image
               fill
               className="h-full w-full object-cover"
-              src={
-                "https://salesforce-cloud-commerce.vercel.app/_next/image?url=%2Fhero.jpg&w=1920&q=75"
-              }
+              src={store.options.cover.background.image}
               alt="Coffee grinder"
             />
-            <div className="absolute inset-0 bg-orange-100 mix-blend-multiply" />
+            {/* The Overlay */}
+            <div
+              className="absolute inset-0 bg-orange-100 mix-blend-multiply"
+              style={{
+                backgroundColor: store.options.cover.overlay.color,
+              }}
+            />
           </div>
           <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
             <p className="relative left-0 right-0 mx-auto mt-5 max-w-xl text-center text-xl  font-semibold uppercase tracking-wide text-orange-600">
-              The Coffee House
+              {store.options.navbar.logo.text}
             </p>
             <h1 className="mt-1 text-center font-bold uppercase text-gray-900 sm:text-5xl sm:tracking-tight lg:text-7xl">
               <span className="block text-white">Life is better with</span>
@@ -31,7 +35,7 @@ export default function Header({ scrollHandler }) {
                 className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-orange-600 shadow-sm hover:bg-orange-100 sm:px-8"
                 onClick={scrollHandler}
               >
-                Shop coffees
+                Shop Now
               </button>
             </div>
           </div>

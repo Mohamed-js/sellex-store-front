@@ -35,7 +35,8 @@ export default function Home({ store, products }) {
 
   if (subdomain === "sellex-home") {
     return <Welcome />;
-  } else if (store) {
+  } else if (subdomain) {
+    console.log(store);
     return (
       <>
         <Navbar aboutScroll={aboutScroll} contactScroll={contactScroll} />
@@ -64,5 +65,6 @@ export async function getServerSideProps(context) {
     };
   }
   const store = await getStore(subdomain);
+  store.options = JSON.parse(store.options);
   return { props: { products: data, store: store } };
 }

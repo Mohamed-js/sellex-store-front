@@ -25,7 +25,7 @@ export default function Store({ store, products, aboutRef, contactRef }) {
           href={`https://res.cloudinary.com/atefcloud/image/upload/${store.image_blob.key}`}
         />
       </Head>
-      <Header scrollHandler={productsScroll} />
+      <Header scrollHandler={productsScroll} store={store} />
 
       <div
         ref={productsRef}
