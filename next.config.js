@@ -16,6 +16,12 @@ const nextConfig = {
         port: "",
         pathname: "/atefcloud/image/upload/**",
       },
+      {
+        protocol: "https",
+        hostname: "salesforce-cloud-commerce.vercel.app",
+        port: "",
+        pathname: "/_next/**",
+      },
     ],
   },
 };

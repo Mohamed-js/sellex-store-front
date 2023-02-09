@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Footer from "../components/Footer";
 import Store from "../components/Homies/Store";
 import Welcome from "../components/Homies/Welcome";
+import Navbar from "../components/Navbar";
 import { getProducts } from "../helpers/Helper";
 
-export default function Home({ products }) {
-  const [store, setStore] = useState();
+export default function Home({ store, products }) {
+  const [subdomain, setStore] = useState();
   useEffect(() => {
     if (window.location.hostname.split(".").length > 1) {
       setStore(window.location.hostname.split(".")[0]);
@@ -12,22 +14,54 @@ export default function Home({ products }) {
     }
     setStore("sellex-home");
   }, []);
-  if (store === "sellex-home") {
+
+  let aboutRef = useRef();
+  let contactRef = useRef();
+  const aboutScroll = (e) => {
+    e.preventDefault();
+    aboutRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+  const contactScroll = (e) => {
+    e.preventDefault();
+    console.log(contactRef);
+    contactRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  if (subdomain === "sellex-home") {
     return <Welcome />;
-  }
-  if (store) {
-    return <Store store={store} products={products} />;
+  } else if (store) {
+    return (
+      <>
+        <Navbar aboutScroll={aboutScroll} contactScroll={contactScroll} />
+        <Store
+          store={store}
+          products={products}
+          aboutRef={aboutRef}
+          contactRef={contactRef}
+        />
+        <Footer />
+      </>
+    );
   }
 }
 
 export async function getServerSideProps(context) {
+  if (context.req.headers.host.split(".").length <= 1) {
+    return { props: {} };
+  }
   const store = context.req.headers.host.split(".")[0];
-  const products = await getProducts(store);
+  const data = await getProducts(store);
 
-  if (!products) {
+  if (!data || data.message === "not found") {
     return {
       notFound: true,
     };
   }
-  return { props: { products } };
+  return { props: { products: data, store: data[0].store } };
 }

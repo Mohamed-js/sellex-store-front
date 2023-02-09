@@ -7,7 +7,8 @@ export default function Header({ scrollHandler }) {
       <div className="mx-auto">
         <div className="relative shadow-xl sm:overflow-hidden">
           <div className="absolute inset-0">
-            <img
+            <Image
+              fill
               className="h-full w-full object-cover"
               src={
                 "https://salesforce-cloud-commerce.vercel.app/_next/image?url=%2Fhero.jpg&w=1920&q=75"

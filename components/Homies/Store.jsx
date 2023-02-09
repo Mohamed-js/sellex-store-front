@@ -1,38 +1,34 @@
 import Head from "next/head";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Header from "./Header";
-import ProductCard from "./ProductCard";
+import ProductCard from "../ProductCard";
+import About from "./About";
+import Contact from "./Contact";
 
-export default function Store({ store, products }) {
-  // const [products, setProducts] = useState();
-  let coffeeRef = useRef();
+export default function Store({ store, products, aboutRef, contactRef }) {
+  let productsRef = useRef();
 
-  const scrollHandler = (e) => {
+  const productsScroll = (e) => {
     e.preventDefault();
-    coffeeRef.current.scrollIntoView({
+    productsRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
 
-  useEffect(() => {
-    // getProducts(store).then((data) => setProducts(data));
-    console.log(products[0].store.image_blob.key);
-  }, [products]);
-
   return (
     <div>
       <Head>
-        <title>{store.toUpperCase()} - SellEx</title>
+        <title>{store.name.toUpperCase()} - SellEx</title>
         <link
           rel="shortcut icon"
-          href={`https://res.cloudinary.com/atefcloud/image/upload/${products[0].store.image_blob.key}`}
+          href={`https://res.cloudinary.com/atefcloud/image/upload/${store.image_blob.key}`}
         />
       </Head>
-      <Header scrollHandler={scrollHandler} />
+      <Header scrollHandler={productsScroll} />
 
       <div
-        ref={coffeeRef}
+        ref={productsRef}
         className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8"
       >
         <div className="sm:py-15 mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8">
@@ -46,6 +42,12 @@ export default function Store({ store, products }) {
           {products.map((product) => (
             <ProductCard product={product} key={product.id} />
           ))}
+        </div>
+        <div ref={aboutRef}>
+          <About />
+        </div>
+        <div ref={contactRef}>
+          <Contact />
         </div>
       </div>
     </div>
