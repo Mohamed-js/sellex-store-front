@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Store from "../components/Homies/Store";
 import Welcome from "../components/Homies/Welcome";
 import Navbar from "../components/Navbar";
-import { getProducts } from "../helpers/Helper";
+import { getProducts, getStore } from "../helpers/Helper";
 
 export default function Home({ store, products }) {
   const [subdomain, setStore] = useState();
@@ -55,13 +55,14 @@ export async function getServerSideProps(context) {
   if (context.req.headers.host.split(".").length <= 1) {
     return { props: {} };
   }
-  const store = context.req.headers.host.split(".")[0];
-  const data = await getProducts(store);
+  const subdomain = context.req.headers.host.split(".")[0];
+  const data = await getProducts(subdomain);
 
   if (!data || data.message === "not found") {
     return {
       notFound: true,
     };
   }
-  return { props: { products: data, store: data[0].store } };
+  const store = await getStore(subdomain);
+  return { props: { products: data, store: store } };
 }

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import { getProduct, getStaticProducts } from "../../helpers/Helper";
+import { getStaticProduct, getStaticProducts } from "../../helpers/Helper";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -58,7 +58,7 @@ export default function Product({ product }) {
 }
 
 export async function getStaticProps({ params }) {
-  const product = await getProduct(params.id);
+  const product = await getStaticProduct(params.id);
   return {
     props: {
       product,
