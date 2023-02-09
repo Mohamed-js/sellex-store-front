@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Header({ scrollHandler, store }) {
+export default function Cover({ scrollHandler, store }) {
   return (
     <header className="relative">
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gray-100" />
