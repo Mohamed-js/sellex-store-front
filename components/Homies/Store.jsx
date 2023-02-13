@@ -4,6 +4,7 @@ import Cover from "./Cover";
 import About from "./About";
 import Contact from "./Contact";
 import Products from "./Products";
+// import { Helmet } from "./Helmet";
 
 export default function Store({ store, products, aboutRef, contactRef }) {
   let productsRef = useRef();
@@ -21,11 +22,9 @@ export default function Store({ store, products, aboutRef, contactRef }) {
     <div>
       <Head>
         <title>{store.name.toUpperCase()} - SellEx</title>
-        <link
-          rel="shortcut icon"
-          href={`https://res.cloudinary.com/atefcloud/image/upload/${store.image_blob.key}`}
-        />
+        <link rel="shortcut icon" href={`${store.image}`} />
       </Head>
+      {/* <Helmet store={store} /> */}
       <Cover scrollHandler={productsScroll} store={store} />
 
       <div

@@ -3,10 +3,10 @@ import Link from "next/link";
 
 const Navbar = ({ aboutScroll, contactScroll, store }) => {
   return (
-    <div>
+    <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
         <div className="flex items-center flex-1">
-          <div className="relative w-10 h-10 m-3 mx-4">
+          <div  className="relative w-10 h-10 m-3 mx-4">
             <Image
               alt="Logo"
               src={
@@ -14,13 +14,15 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
               }
               fill
               className="rounded-full object-cover2"
+              style={{textAlign: `${store.options.navbar.logo.position}`}}
             />
           </div>
 
-          <ul className="sm:flex text-gray-700 pr-2 hidden">
+          <ul style={{color: `${store.options.navbar.links.color}`}} className="sm:flex text-gray-700 pr-2 hidden">
             {store.options.navbar.links.home.exists && (
               <Link href="#">
                 <li className="flex items-end mr-2">
+
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -36,6 +38,7 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
                     />
                   </svg>{" "}
                   {store.options.navbar.links.with_text && (
+                    
                     <span className="h-5">
                       {store.options.navbar.links.home.text}
                     </span>
@@ -43,49 +46,56 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
                 </li>
               </Link>
             )}
-            <a onClick={aboutScroll}>
-              <li className="flex items-end mr-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-1"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
-                  />
-                </svg>
-                {store.options.navbar.links.with_text && (
-                  <span className="h-5">About</span>
-                )}
-              </li>
-            </a>
-
-            <a onClick={contactScroll}>
-              <li className="flex items-end mr-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 mr-1"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-                  />
-                </svg>
-                {store.options.navbar.links.with_text && (
-                  <span className="h-5">Contact</span>
-                )}
-              </li>
-            </a>
+            {store.options.navbar.links.about.exists && (
+              <a onClick={aboutScroll} className="cursor-pointer">
+                <li className="flex items-end mr-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6 mr-1"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+                    />
+                  </svg>
+                  {store.options.navbar.links.with_text && (
+                    <span className="h-5">
+                      {store.options.navbar.links.about.text}
+                    </span>
+                  )}
+                </li>
+              </a>
+            )}
+            {store.options.navbar.links.contact.exists && (
+              <a onClick={contactScroll} className="cursor-pointer">
+                <li className="flex items-end mr-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6 mr-1"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
+                    />
+                  </svg>
+                  {store.options.navbar.links.with_text && (
+                    <span className="h-5">
+                      {store.options.navbar.links.contact.text}
+                    </span>
+                  )}
+                </li>
+              </a>
+            )}
           </ul>
         </div>
 
@@ -112,7 +122,11 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
         </div>
 
         {/* Cart & Menu */}
-        <div className="flex flex-1 justify-end mr-3 text-gray-700">
+        <div
+          className="flex flex-1 justify-end mr-3 text-gray-700"
+          style={{ color: store.options.navbar.cart.color }}
+        >
+          <Link href="./cart/Cart">
           <div className="mr-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +143,7 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
               />
             </svg>
           </div>
+          </Link>
           <div className="sm:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"

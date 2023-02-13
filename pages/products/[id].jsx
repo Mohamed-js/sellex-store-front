@@ -8,6 +8,8 @@ function cn(...classes) {
 }
 
 export default function Product({ product }) {
+  let colors = product.variants.colors;
+  let sizes = product.variants.sizes;
   const [isLoading, setLoading] = useState(true);
 
   return (
@@ -16,10 +18,7 @@ export default function Product({ product }) {
         <title>
           {product.store.name.toUpperCase()} - {product.name}
         </title>
-        <link
-          rel="shortcut icon"
-          href={`https://res.cloudinary.com/atefcloud/image/upload/${product.store.image_blob.key}`}
-        />
+        <link rel="shortcut icon" href={`${product.store}`} />
       </Head>
       <div className="flex h-screen flex-col justify-between">
         <div className="mx-auto mt-16 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -33,7 +32,7 @@ export default function Product({ product }) {
                     ? "scale-110 blur-lg grayscale"
                     : "scale-100 blur-0 grayscale-0"
                 )}
-                src={`https://res.cloudinary.com/atefcloud/image/upload/${product.image_blob.key}`}
+                src={`${product.image}`}
                 width={560}
                 height={640}
                 onLoadingComplete={() => setLoading(false)}
@@ -50,7 +49,37 @@ export default function Product({ product }) {
               <div className="mt-10 mb-5 border-t border-gray-200 pt-10 font-bold">
                 Description
               </div>
+
               <p className="max-w-xl">{product.name}</p>
+              <div>
+                {sizes && <h3 className="text-left p-3">Sizes</h3>}
+                {sizes &&
+                  sizes.values.map((size) => {
+                    return (
+                      <>
+                        <button
+                          className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
+                        >
+                          {size}
+                        </button>
+                      </>
+                    );
+                  })}
+              </div>
+              <div>
+                {colors && <h3 className="text-left p-3">Colors</h3>}
+                {colors &&
+                  colors.values.map((color) => {
+                    return (
+                      <>
+                        <button
+                          style={{ backgroundColor: color }}
+                          className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
+                        ></button> 
+                      </>
+                    );
+                  })}
+              </div>
             </div>
           </div>
         </div>
