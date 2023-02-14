@@ -57,9 +57,7 @@ export default function Product({ product }) {
                   sizes.values.map((size) => {
                     return (
                       <>
-                        <button
-                          className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
-                        >
+                        <button className="w-10 h-10 rounded-full border border-black-600 ml-1.5">
                           {size}
                         </button>
                       </>
@@ -75,7 +73,7 @@ export default function Product({ product }) {
                         <button
                           style={{ backgroundColor: color }}
                           className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
-                        ></button> 
+                        ></button>
                       </>
                     );
                   })}
