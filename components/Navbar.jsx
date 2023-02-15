@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Navbar = ({ aboutScroll, contactScroll, store }) => {
+const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
   return (
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
@@ -126,8 +126,8 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
           className="flex flex-1 justify-end mr-3 text-gray-700"
           style={{ color: store.options.navbar.cart.color }}
         >
-          <Link href="./cart/Cart">
-          <div className="mr-1">
+          
+          <div className="mr-1 cursor-pointer" onClick= {() => OpenStore()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -143,7 +143,7 @@ const Navbar = ({ aboutScroll, contactScroll, store }) => {
               />
             </svg>
           </div>
-          </Link>
+        
           <div className="sm:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"

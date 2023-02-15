@@ -1,17 +1,55 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import Link from "next/link";
 import { getStaticProduct, getStaticProducts } from "../../helpers/Helper";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+// function DeleteProduct(e){
+//   let products = JSON.parse(localStorage.getItem("product")) || [];
+//   products.filter(product => product.id !== e.id)
+// }
 export default function Product({ product }) {
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  let storageProducts = typeof window !== "undefined" && JSON.parse(localStorage.getItem("product")) || [];
+  let variantsValues = Object.values(product.variants);
   let colors = product.variants.colors;
   let sizes = product.variants.sizes;
   const [isLoading, setLoading] = useState(true);
 
+  function AddToLocalStorage() {
+    if (storageProducts.find((stProduct) => stProduct.id === product.id)) {
+      return;
+    } else {
+      localStorage.setItem(
+        "product",
+        JSON.stringify([
+          ...storageProducts,
+          {
+            // category: {
+            //   // image: product.category.image,
+            //   // name: product.category.name,
+            // },
+            price: product.selling_price,
+            name: product.name,
+            id: product.id,
+            image: product.image,
+            store: {
+              id: product.store.id,
+              image: product.store.image,
+              name: product.store.name,
+            },
+            color: color,
+            size: size,
+          },
+        ])
+      );
+    }
+  }
   return (
     <>
       <Head>
@@ -53,31 +91,75 @@ export default function Product({ product }) {
               <p className="max-w-xl">{product.name}</p>
               <div>
                 {sizes && <h3 className="text-left p-3">Sizes</h3>}
-                {sizes &&
-                  sizes.values.map((size) => {
-                    return (
+                {variantsValues.map((value) => {
+                  return (
+                    value.type === "text" && (
                       <>
-                        <button className="w-10 h-10 rounded-full border border-black-600 ml-1.5">
-                          {size}
-                        </button>
+                        <div>
+                          {value.values.map((size) => {
+                            return (
+                              <>
+                                <button
+                                  data-variant="flat"
+                                  className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
+                                  role="option"
+                                  aria-selected="false"
+                                  aria-label="color black"
+                                  title="black"
+                                  onClick={() => setSize(size)}
+                                >
+                                  {size}
+                                </button>
+                              </>
+                            );
+                          })}
+                        </div>
                       </>
-                    );
-                  })}
+                    )
+                  );
+                })}
               </div>
               <div>
                 {colors && <h3 className="text-left p-3">Colors</h3>}
-                {colors &&
-                  colors.values.map((color) => {
-                    return (
+                {variantsValues.map((value) => {
+                  return (
+                    value.type === "color" && (
                       <>
-                        <button
-                          style={{ backgroundColor: color }}
-                          className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
-                        ></button>
+                        <div>
+                          {value.values.map((color) => {
+                            return (
+                              <>
+                                <button
+                                  data-variant="flat"
+                                  style={{ backgroundColor: color }}
+                                  className="bg-black w-10 h-10 rounded-full ml-1"
+                                  role="option"
+                                  aria-selected="false"
+                                  aria-label="color black"
+                                  title="black"
+                                  onClick={() => setColor(color)}
+                                ></button>
+                              </>
+                            );
+                          })}
+                        </div>
                       </>
-                    );
-                  })}
+                    )
+                  );
+                })}
               </div>
+              {/* <Link href="./cart/Cart"> */}
+                <div className="text-center">
+                  <button
+                    className="w-full p-5 text-white bg-black hover:opacity-75 transition duration-700 ease-in-out hover:ease-in"
+                    onClick={() => {
+                      AddToLocalStorage();
+                    }}
+                  >
+                    Add To Cart
+                  </button>
+                </div>
+              {/* </Link> */}
             </div>
           </div>
         </div>
