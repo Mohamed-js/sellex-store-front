@@ -6,7 +6,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
         <div className="flex items-center flex-1">
-          <div  className="relative w-10 h-10 m-3 mx-4">
+          <div className="relative w-10 h-10 m-3 mx-4">
             <Image
               alt="Logo"
               src={
@@ -14,15 +14,17 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
               }
               fill
               className="rounded-full object-cover2"
-              style={{textAlign: `${store.options.navbar.logo.position}`}}
+              style={{ textAlign: `${store.options.navbar.logo.position}` }}
             />
           </div>
 
-          <ul style={{color: `${store.options.navbar.links.color}`}} className="sm:flex text-gray-700 pr-2 hidden">
+          <ul
+            style={{ color: `${store.options.navbar.links.color}` }}
+            className="sm:flex text-gray-700 pr-2 hidden"
+          >
             {store.options.navbar.links.home.exists && (
               <Link href="#">
                 <li className="flex items-end mr-2">
-
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -38,7 +40,6 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
                     />
                   </svg>{" "}
                   {store.options.navbar.links.with_text && (
-                    
                     <span className="h-5">
                       {store.options.navbar.links.home.text}
                     </span>
@@ -126,8 +127,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
           className="flex flex-1 justify-end mr-3 text-gray-700"
           style={{ color: store.options.navbar.cart.color }}
         >
-          
-          <div className="mr-1 cursor-pointer" onClick= {() => OpenStore()}>
+          <div className="mr-1 cursor-pointer" onClick={() => OpenStore()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -143,7 +143,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
               />
             </svg>
           </div>
-        
+
           <div className="sm:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
