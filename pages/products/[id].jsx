@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { getStaticProduct, getStaticProducts } from "../../helpers/Helper";
-
+import Navbar from '../../components/Navbar'
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -73,6 +73,7 @@ export default function Product({ product, defVariants }) {
   }
   return (
     <>
+    <Navbar />
       <Head>
         <title>
           {product.store.name.toUpperCase()} - {product.name}
@@ -200,6 +201,7 @@ export default function Product({ product, defVariants }) {
 
 export async function getStaticProps({ params }) {
   const product = await getStaticProduct(params.id);
+  product.store.options = JSON.parse(product.store.options);
   const defVariants = {};
   Object.entries(product.variants).map((variant) => {
     defVariants[variant[0]] = {
