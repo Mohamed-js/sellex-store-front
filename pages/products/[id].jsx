@@ -1,50 +1,71 @@
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import Link from "next/link";
 import { getStaticProduct, getStaticProducts } from "../../helpers/Helper";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-// function DeleteProduct(e){
-//   let products = JSON.parse(localStorage.getItem("product")) || [];
-//   products.filter(product => product.id !== e.id)
-// }
-export default function Product({ product }) {
-  const [color, setColor] = useState("");
-  const [size, setSize] = useState("");
-  let storageProducts = typeof window !== "undefined" && JSON.parse(localStorage.getItem("product")) || [];
-  let variantsValues = Object.values(product.variants);
-  let colors = product.variants.colors;
-  let sizes = product.variants.sizes;
+export default function Product({ product, defVariants }) {
+  const [selectedVariants, setSelectedVariants] = useState(defVariants);
+  let storageProducts =
+    (typeof window !== "undefined" &&
+      JSON.parse(localStorage.getItem("products"))) ||
+    [];
+
   const [isLoading, setLoading] = useState(true);
 
+  const handleVariantClick = (name, type, value) => {
+    setSelectedVariants((prev) => {
+      return { ...prev, [name]: { type, value } };
+    });
+  };
+
   function AddToLocalStorage() {
-    if (storageProducts.find((stProduct) => stProduct.id === product.id)) {
-      return;
+    const searchedProduct = storageProducts.filter(
+      (stProduct) =>
+        stProduct.id === product.id &&
+        JSON.stringify(stProduct.variants) === JSON.stringify(selectedVariants)
+    )[0];
+
+    console.log(searchedProduct);
+    if (searchedProduct) {
+      const productsWithoutSelectedProduct = storageProducts.filter(
+        (stProduct) =>
+          stProduct.id !== product.id ||
+          (stProduct.id === product.id &&
+            JSON.stringify(stProduct.variants) !==
+              JSON.stringify(selectedVariants))
+      );
+      localStorage.setItem(
+        "products",
+        JSON.stringify([
+          ...productsWithoutSelectedProduct,
+          {
+            id: product.id,
+            name: product.name,
+            price: product.selling_price,
+            image: product.image,
+            store_id: product.store.id,
+            variants: selectedVariants,
+            quantity: searchedProduct.quantity + 1,
+          },
+        ])
+      );
     } else {
       localStorage.setItem(
-        "product",
+        "products",
         JSON.stringify([
           ...storageProducts,
           {
-            // category: {
-            //   // image: product.category.image,
-            //   // name: product.category.name,
-            // },
-            price: product.selling_price,
-            name: product.name,
             id: product.id,
+            name: product.name,
+            price: product.selling_price,
             image: product.image,
-            store: {
-              id: product.store.id,
-              image: product.store.image,
-              name: product.store.name,
-            },
-            color: color,
-            size: size,
+            store_id: product.store.id,
+            variants: selectedVariants,
+            quantity: 1,
           },
         ])
       );
@@ -56,7 +77,7 @@ export default function Product({ product }) {
         <title>
           {product.store.name.toUpperCase()} - {product.name}
         </title>
-        <link rel="shortcut icon" href={`${product.store}`} />
+        <link rel="shortcut icon" href={`${product.store.image}`} />
       </Head>
       <div className="flex h-screen flex-col justify-between">
         <div className="mx-auto mt-16 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -84,82 +105,91 @@ export default function Product({ product }) {
               <h1 className="mt-3 text-4xl font-bold text-gray-500 sm:text-3xl sm:tracking-tight lg:text-3xl">
                 ${product.selling_price}
               </h1>
-              <div className="mt-10 mb-5 border-t border-gray-200 pt-10 font-bold">
-                Description
+              {product.description && (
+                <>
+                  <div className="mt-10 mb-5 border-t border-gray-200 pt-10 font-bold">
+                    Description
+                  </div>
+                  <p className="max-w-xl">{product.description}</p>
+                </>
+              )}
+
+              <div>
+                {Object.entries(product.variants).map((variant) => (
+                  <div className="pt-2" key={variant}>
+                    <h2 className="uppercase mb-2 text-xl font-semibold mt-2">
+                      {variant[0]}
+                    </h2>
+                    <div className="flex flex-wrap">
+                      {variant[1]["type"] == "color"
+                        ? variant[1]["values"].map((value) => (
+                            <button
+                              key={value}
+                              onClick={() =>
+                                handleVariantClick(
+                                  variant[0],
+                                  variant[1]["type"],
+                                  value
+                                )
+                              }
+                              className="w-12 h-12 rounded-full border shadow-md mr-2 transition duration-300 hover:scale-110 mb-2 text-2xl "
+                              style={{
+                                backgroundColor: value,
+                                border:
+                                  selectedVariants[variant[0]] &&
+                                  selectedVariants[variant[0]].value == value
+                                    ? "solid 3px #171717"
+                                    : "none",
+                                color: "white",
+                              }}
+                            >
+                              {selectedVariants[variant[0]] &&
+                                selectedVariants[variant[0]].value == value &&
+                                "✓"}
+                            </button>
+                          ))
+                        : variant[1]["values"].map((value) => (
+                            <button
+                              key={value}
+                              onClick={() =>
+                                handleVariantClick(
+                                  variant[0],
+                                  variant[1]["type"],
+                                  value
+                                )
+                              }
+                              className="border rounded shadow-md mr-2 text-center transition duration-300 hover:scale-110 min-w-fit px-5 py-2 mb-2"
+                              style={{
+                                color:
+                                  selectedVariants[variant[0]] &&
+                                  selectedVariants[variant[0]].value == value
+                                    ? "white"
+                                    : "black",
+                                backgroundColor:
+                                  selectedVariants[variant[0]] &&
+                                  selectedVariants[variant[0]].value == value
+                                    ? "#171717"
+                                    : "transparent",
+                              }}
+                            >
+                              {value.toUpperCase()}
+                            </button>
+                          ))}
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <p className="max-w-xl">{product.name}</p>
-              <div>
-                {sizes && <h3 className="text-left p-3">Sizes</h3>}
-                {variantsValues.map((value) => {
-                  return (
-                    value.type === "text" && (
-                      <>
-                        <div>
-                          {value.values.map((size) => {
-                            return (
-                              <>
-                                <button
-                                  data-variant="flat"
-                                  className="w-10 h-10 rounded-full border border-black-600 ml-1.5"
-                                  role="option"
-                                  aria-selected="false"
-                                  aria-label="color black"
-                                  title="black"
-                                  onClick={() => setSize(size)}
-                                >
-                                  {size}
-                                </button>
-                              </>
-                            );
-                          })}
-                        </div>
-                      </>
-                    )
-                  );
-                })}
+              <div className="text-center mt-4">
+                <button
+                  className="w-full p-5 text-white bg-black hover:opacity-75 transition duration-700 ease-in-out hover:ease-in"
+                  onClick={() => {
+                    AddToLocalStorage();
+                  }}
+                >
+                  Add To Cart
+                </button>
               </div>
-              <div>
-                {colors && <h3 className="text-left p-3">Colors</h3>}
-                {variantsValues.map((value) => {
-                  return (
-                    value.type === "color" && (
-                      <>
-                        <div>
-                          {value.values.map((color) => {
-                            return (
-                              <>
-                                <button
-                                  data-variant="flat"
-                                  style={{ backgroundColor: color }}
-                                  className="bg-black w-10 h-10 rounded-full ml-1"
-                                  role="option"
-                                  aria-selected="false"
-                                  aria-label="color black"
-                                  title="black"
-                                  onClick={() => setColor(color)}
-                                ></button>
-                              </>
-                            );
-                          })}
-                        </div>
-                      </>
-                    )
-                  );
-                })}
-              </div>
-              {/* <Link href="./cart/Cart"> */}
-                <div className="text-center">
-                  <button
-                    className="w-full p-5 text-white bg-black hover:opacity-75 transition duration-700 ease-in-out hover:ease-in"
-                    onClick={() => {
-                      AddToLocalStorage();
-                    }}
-                  >
-                    Add To Cart
-                  </button>
-                </div>
-              {/* </Link> */}
             </div>
           </div>
         </div>
@@ -170,9 +200,17 @@ export default function Product({ product }) {
 
 export async function getStaticProps({ params }) {
   const product = await getStaticProduct(params.id);
+  const defVariants = {};
+  Object.entries(product.variants).map((variant) => {
+    defVariants[variant[0]] = {
+      type: variant[1]["type"],
+      value: variant[1]["values"][0],
+    };
+  });
   return {
     props: {
       product,
+      defVariants,
     },
   };
 }

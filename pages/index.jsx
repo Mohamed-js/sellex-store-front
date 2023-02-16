@@ -5,19 +5,18 @@ import Welcome from "../components/Homies/Welcome";
 import Navbar from "../components/Navbar";
 import { getProducts, getStore } from "../helpers/Helper";
 
-
 export default function Home({ store, products }) {
   const [subdomain, setStore] = useState();
   const [openStore, setOpenStore] = useState(false);
-  function OpenStore(){
-      setOpenStore(prev => !prev)
-      if(!openStore){
-       document.body.style.position = 'fixed';
-      }else{
-        document.body.style.position = "relative"
-      }
+  function OpenStore() {
+    setOpenStore((prev) => !prev);
+    if (!openStore) {
+      document.body.style.position = "fixed";
+    } else {
+      document.body.style.position = "relative";
+    }
   }
-  
+
   useEffect(() => {
     if (window.location.hostname.split(".").length > 1) {
       setStore(window.location.hostname.split(".")[0]);
@@ -47,7 +46,6 @@ export default function Home({ store, products }) {
   if (subdomain === "sellex-home") {
     return <Welcome />;
   } else if (subdomain) {
-    console.log(store);
     return (
       <>
         <Navbar
@@ -57,7 +55,7 @@ export default function Home({ store, products }) {
           OpenStore={OpenStore}
         />
         <Store
-        openStore={openStore}
+          openStore={openStore}
           store={store}
           products={products}
           aboutRef={aboutRef}
