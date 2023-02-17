@@ -1,27 +1,12 @@
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const Cart = ({ OpenStore }) => {
-  const [count, setCount] = useState(1);
-  let storageProducts =
-    (typeof window !== "undefined" &&
-      JSON.parse(localStorage.getItem("products"))) ||
-    [];
-
-  function DeleteProduct(product) {
-    let products = JSON.parse(localStorage.getItem("products")) || [];
-    localStorage.setItem(
-      "products",
-      JSON.stringify(
-        products.filter(
-          (p) =>
-            p.id !== product.id ||
-            (p.id === product.id &&
-              JSON.stringify(p.variants) !== JSON.stringify(product.variants))
-        )
-      )
-    );
-  }
+const Cart = ({ closeCart }) => {
+  const [storageProducts, setStorageProducts] = useState();
+  useEffect(() => {
+    setStorageProducts(JSON.parse(localStorage.getItem("products")) || []);
+  }, []);
 
   return (
     <div className="h-full w-full fixed top-0 left-0 flex justify-center items-center z-50 bg-[#17171771]">
@@ -35,12 +20,12 @@ const Cart = ({ OpenStore }) => {
               >
                 <div
                   className="flex justify-center items-center"
-                  onClick={() => OpenStore()}
+                  onClick={() => closeCart()}
                 >
                   <span className="flex justify-center items-center text-2xl ease-in-out duration-500  w-10 h-10 border hover:border-gray-300">
                     ×
                   </span>
-                  <span className="ml-2 text-accent-7 text-sm ">Close</span>
+                  <span className="ml-2 text-accent-7 text-sm ">CLOSE</span>
                 </div>
               </button>
               <svg
@@ -59,92 +44,65 @@ const Cart = ({ OpenStore }) => {
               </svg>
             </header>
 
-            {storageProducts &&
-              storageProducts.map((product) => {
+            {(storageProducts &&
+              storageProducts.length > 0 &&
+              storageProducts.map((product, i) => {
                 return (
-                  <>
-                    <div key={product.id} className="pt-2">
-                      <div className="flex justify-between items-start py-3">
-                        <div className="flex">
-                          <div className="img-parent pr-3">
-                            <Image
-                              src={product.image}
-                              width={80}
-                              height={80}
-                              alt="product-image"
-                            />
-                          </div>
-                          <div>
-                            <h3>{product.name}</h3>
-                            {/* <span>Sizes: {product.sizes && product.sizes}</span> */}
-                            xix
-                            <span className="mx-3">
-                              {/* Colors: {product.colors && product.colors} */}
-                              clx
-                            </span>
-                          </div>
-                        </div>
-                        <div>
-                          <span>${product.selling_price * count} </span>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center mb-4">
-                        <button
-                          onClick={() => DeleteProduct(product)}
-                          className="flex justify-center items-center mr-2 ease-in-out duration-500 text-2xl  w-12 h-12 border hover:border-gray-300"
-                        >
-                          ×
-                        </button>
-
-                        <input
-                          className="w-full ease-in-out duration-500 p-3 outline-none hover:border-gray-300 border h-12"
-                          type="input"
-                          max="50"
-                          min="0"
-                          value={count}
-                          readOnly
-                        />
-                        <button
-                          className=" ease-in-out duration-500  w-12 h-12 border hover:border-gray-300"
-                          //   onClick={() => setCount((prev) => prev + 1)}
-                        >
-                          +
-                        </button>
-                        <button
-                          className="ease-in-out duration-500  w-12 h-12 border hover:border-gray-300"
-                          //   onClick={() => {
-                          //     if (count < 1) {
-                          //       return;
-                          //     } else {
-                          //       setCount(count - 1);
-                          //     }
-                          //   }}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </div>
-                    <hr />
-                  </>
+                  <CartCard
+                    index={i}
+                    product={product}
+                    key={product.id + JSON.stringify(product.variants)}
+                    storageProducts={storageProducts}
+                    setStorageProducts={setStorageProducts}
+                  />
                 );
-              })}
-            <div className="sticky bottom-0 bg-white flex-shrink-0 px-3 py-3 sm:px-3 w-full right-0 left-0 bg-accent-0 border-t text-sm">
-              <ul className="pb-2">
-                <li className="flex justify-between py-1">
-                  <span>Subtotal</span>
-                  <span>$???</span>
-                </li>
-                <li className="flex justify-between py-1"></li>
-                <li className="flex justify-between py-1"></li>
-              </ul>
-              <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
-                <span>Total</span>
-                <span>$175.00</span>
+              })) || (
+              <div className="h-96 flex items-center justify-center uppercase flex-col">
+                <h2 className="text-lg">Cart is empty...</h2>
+                <Link href="/" onClick={() => closeCart()}>
+                  <button className="rounded-md border border-transparent outline outline-orange-600 px-4 py-3 text-base font-medium shadow-sm hover:bg-orange-600 text-orange-600 hover:text-white sm:px-8 mt-5 transition duration-500 ">
+                    Shop Now
+                  </button>
+                </Link>
               </div>
-              <div className="text-lg w-full bg-black text-white pt-4 pb-4 text-center ">
-                <a data-variant="flat">Proceed to Checkout</a>
+            )}
+            {storageProducts && storageProducts.length > 0 && (
+              <div className="sticky bottom-0 bg-white flex-shrink-0 px-3 py-3 sm:px-3 w-full right-0 left-0 bg-accent-0 border-t text-sm">
+                <ul className="pb-2">
+                  <li className="flex justify-between py-1">
+                    <span>Subtotal</span>
+                    <span>
+                      $
+                      {storageProducts.reduce(
+                        (accumulator, product) =>
+                          accumulator +
+                          product.quantity * product.selling_price,
+                        0
+                      )}
+                    </span>
+                  </li>
+                  <li className="flex justify-between py-1">
+                    <span>Shipping</span>
+                    <span className="font-semibold">FREE</span>
+                  </li>
+                  <li className="flex justify-between py-1"></li>
+                </ul>
+                <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
+                  <span>Total</span>
+                  <span>
+                    $
+                    {storageProducts.reduce(
+                      (accumulator, product) =>
+                        accumulator + product.quantity * product.selling_price,
+                      0
+                    )}
+                  </span>
+                </div>
+                <div className="text-lg w-full bg-black text-white pt-4 pb-4 text-center ">
+                  <a data-variant="flat">Proceed to Checkout</a>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -153,3 +111,133 @@ const Cart = ({ OpenStore }) => {
 };
 
 export default Cart;
+
+export const CartCard = ({
+  product,
+  index,
+  storageProducts,
+  setStorageProducts,
+}) => {
+  function DeleteProduct() {
+    const prods = storageProducts;
+    prods.splice(index, 1);
+    localStorage.setItem("products", JSON.stringify(prods));
+    setStorageProducts(JSON.parse(localStorage.getItem("products")));
+  }
+
+  const increaseProduct = () => {
+    const prods = storageProducts;
+    prods[index].quantity++;
+    localStorage.setItem("products", JSON.stringify(prods));
+
+    setStorageProducts(JSON.parse(localStorage.getItem("products")));
+  };
+
+  const decreaseProduct = () => {
+    const prods = storageProducts;
+    prods[index].quantity--;
+    localStorage.setItem("products", JSON.stringify(prods));
+
+    setStorageProducts(JSON.parse(localStorage.getItem("products")));
+  };
+  return (
+    <>
+      <div key={product.id} className="pt-2">
+        <div className="flex justify-between items-start py-3">
+          <div className="flex">
+            <div className="img-parent pr-3">
+              <Image
+                src={product.image}
+                width={80}
+                height={80}
+                alt={product.name}
+              />
+            </div>
+            <div>
+              <h3 className="text-normal font-bold sm:text-2xl">
+                {product.name}
+              </h3>
+              <div className="flex flex-row text-sm sm:text-lg ">
+                {Object.entries(product.variants).map((variant) => (
+                  <div key={variant[0]}>
+                    {variant[1].type == "color" ? (
+                      <span className="capitalize flex flex-row items-center">
+                        {variant[0]}:{" "}
+                        <div
+                          className="rounded-full border border-black mr-2 ml-1"
+                          style={{
+                            width: "1.6rem",
+                            height: "1.6rem",
+                          }}
+                        >
+                          <div
+                            style={{
+                              backgroundColor: variant[1].value,
+                            }}
+                            key={variant[1].value}
+                            className="w-6 h-6 rounded-full border shadow-md transition duration-300 inline-block border-white"
+                          ></div>
+                        </div>
+                      </span>
+                    ) : (
+                      <span className="mx-1 capitalize flex flex-row items-center">
+                        {variant[0]}:{" "}
+                        <div className="border rounded shadow-md text-center transition duration-300 px-1 inline-block text-sm ml-1 font-bold">
+                          {variant[1].value.toUpperCase()}
+                        </div>
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div>
+            <span>${product.selling_price * product.quantity}</span>
+          </div>
+        </div>
+        <div className="flex justify-center items-center mb-4">
+          <button
+            onClick={() => DeleteProduct(product)}
+            className="flex justify-center items-center mr-2 ease-in-out duration-500 text-2xl  w-12 h-12 border hover:border-gray-300"
+          >
+            ×
+          </button>
+
+          <input
+            className="w-full ease-in-out duration-500 p-3 outline-none hover:border-gray-300 border h-12"
+            type="number"
+            value={product.quantity}
+            readOnly
+          />
+
+          <button
+            className="ease-in-out duration-500 w-12 h-12 border hover:border-gray-300 text-xl"
+            style={{
+              cursor: product.quantity <= 1 ? "not-allowed" : "pointer",
+            }}
+            onClick={() => {
+              if (product.quantity <= 1) {
+                return;
+              } else {
+                decreaseProduct();
+              }
+            }}
+          >
+            -
+          </button>
+          <button
+            className=" ease-in-out duration-500 w-12 h-12 border hover:border-gray-300 text-xl"
+            style={{
+              cursor: product.quantity >= 20 ? "not-allowed" : "pointer",
+            }}
+            onClick={() => increaseProduct()}
+          >
+            +
+          </button>
+        </div>
+      </div>
+      <hr />
+    </>
+  );
+};

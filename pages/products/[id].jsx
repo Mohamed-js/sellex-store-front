@@ -2,7 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import { getStaticProduct, getStaticProducts } from "../../helpers/Helper";
-import Navbar from '../../components/Navbar'
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -45,7 +46,7 @@ export default function Product({ product, defVariants }) {
           {
             id: product.id,
             name: product.name,
-            price: product.selling_price,
+            selling_price: product.selling_price,
             image: product.image,
             store_id: product.store.id,
             variants: selectedVariants,
@@ -61,7 +62,7 @@ export default function Product({ product, defVariants }) {
           {
             id: product.id,
             name: product.name,
-            price: product.selling_price,
+            selling_price: product.selling_price,
             image: product.image,
             store_id: product.store.id,
             variants: selectedVariants,
@@ -73,14 +74,14 @@ export default function Product({ product, defVariants }) {
   }
   return (
     <>
-    <Navbar />
+      <Navbar store={product.store} />
       <Head>
         <title>
           {product.store.name.toUpperCase()} - {product.name}
         </title>
         <link rel="shortcut icon" href={`${product.store.image}`} />
       </Head>
-      <div className="flex h-screen flex-col justify-between">
+      <div className="flex flex-col justify-between">
         <div className="mx-auto mt-16 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="mx-auto flex flex-col sm:flex-row">
             <div className="relative">
@@ -195,6 +196,7 @@ export default function Product({ product, defVariants }) {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

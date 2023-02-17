@@ -1,28 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import Cart from "./Cart";
 
-const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
+const Navbar = ({ aboutScroll, contactScroll, store, home }) => {
+  const [storeOpened, setStoreOpened] = useState(false);
+  function closeCart() {
+    setStoreOpened((prev) => !prev);
+    if (!storeOpened) {
+      document.body.style.position = "fixed";
+    } else {
+      document.body.style.position = "relative";
+    }
+  }
   return (
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
         <div className="flex items-center flex-1">
-          <div  className="relative w-10 h-10 m-3 mx-4">
-            <Image
-              alt="Logo"
-              src={
-                "https://salesforce-cloud-commerce.vercel.app/_next/image?url=%2Fhero.jpg&w=1920&q=75"
-              }
-              fill
-              className="rounded-full object-cover2"
-              style={{textAlign: `${store.options.navbar.logo.position}`}}
-            />
-          </div>
-
-          <ul style={{color: `${store.options.navbar.links.color}`}} className="sm:flex text-gray-700 pr-2 hidden">
+          <Link href="/">
+            <div className="relative w-10 h-10 m-3 mx-4">
+              <Image
+                alt="Logo"
+                src={store.image}
+                fill
+                className="rounded-full object-cover2"
+                style={{ textAlign: `${store.options.navbar.logo.position}` }}
+              />
+            </div>
+          </Link>
+          <ul
+            style={{ color: `${store.options.navbar.links.color}` }}
+            className="sm:flex text-gray-700 pr-2 hidden"
+          >
             {store.options.navbar.links.home.exists && (
-              <Link href="#">
+              <Link href={home ? "#" : "/"}>
                 <li className="flex items-end mr-2">
-
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -38,7 +50,6 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
                     />
                   </svg>{" "}
                   {store.options.navbar.links.with_text && (
-                    
                     <span className="h-5">
                       {store.options.navbar.links.home.text}
                     </span>
@@ -47,7 +58,11 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
               </Link>
             )}
             {store.options.navbar.links.about.exists && (
-              <a onClick={aboutScroll} className="cursor-pointer">
+              <Link
+                href={home ? "" : "/#about"}
+                onClick={aboutScroll}
+                className="cursor-pointer"
+              >
                 <li className="flex items-end mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -69,10 +84,14 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
                     </span>
                   )}
                 </li>
-              </a>
+              </Link>
             )}
             {store.options.navbar.links.contact.exists && (
-              <a onClick={contactScroll} className="cursor-pointer">
+              <Link
+                href={home ? "" : "/#contact"}
+                onClick={contactScroll}
+                className="cursor-pointer"
+              >
                 <li className="flex items-end mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +113,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
                     </span>
                   )}
                 </li>
-              </a>
+              </Link>
             )}
           </ul>
         </div>
@@ -126,8 +145,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
           className="flex flex-1 justify-end mr-3 text-gray-700"
           style={{ color: store.options.navbar.cart.color }}
         >
-          
-          <div className="mr-1 cursor-pointer" onClick= {() => OpenStore()}>
+          <div className="mr-1 cursor-pointer" onClick={() => closeCart()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -143,7 +161,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
               />
             </svg>
           </div>
-        
+
           <div className="sm:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -184,6 +202,7 @@ const Navbar = ({ aboutScroll, contactScroll, store, OpenStore }) => {
           />
         </svg>
       </div>
+      {storeOpened && <Cart closeCart={closeCart} />}
     </div>
   );
 };
