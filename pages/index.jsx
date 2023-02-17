@@ -7,15 +7,6 @@ import { getProducts, getStore } from "../helpers/Helper";
 
 export default function Home({ store, products }) {
   const [subdomain, setStore] = useState();
-  const [openStore, setOpenStore] = useState(false);
-  function OpenStore() {
-    setOpenStore((prev) => !prev);
-    if (!openStore) {
-      document.body.style.position = "fixed";
-    } else {
-      document.body.style.position = "relative";
-    }
-  }
 
   useEffect(() => {
     if (window.location.hostname.split(".").length > 1) {
@@ -52,15 +43,13 @@ export default function Home({ store, products }) {
           aboutScroll={aboutScroll}
           contactScroll={contactScroll}
           store={store}
-          OpenStore={OpenStore}
+          home
         />
         <Store
-          openStore={openStore}
           store={store}
           products={products}
           aboutRef={aboutRef}
           contactRef={contactRef}
-          OpenStore={OpenStore}
         />
         <Footer />
       </>
