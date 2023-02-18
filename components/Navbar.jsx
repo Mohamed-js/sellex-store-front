@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Cart from "./Cart";
 
-const Navbar = ({ aboutScroll, contactScroll, store, home }) => {
+const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
   const [storeOpened, setStoreOpened] = useState(false);
   function closeCart() {
     setStoreOpened((prev) => !prev);
@@ -116,28 +116,37 @@ const Navbar = ({ aboutScroll, contactScroll, store, home }) => {
               </Link>
             )}
           </ul>
+          <input
+            onChange={(e) => SearchProduct(e)}
+            type="search"
+            className="w-full border p-2 pl-3 focus:outline-gray-300"
+          />
         </div>
-
         <div className="flex-1 relative text-gray-700 hidden lg:block">
           <input
             type="text"
             placeholder="Search for products..."
             className="w-full border p-2 pl-3 focus:outline-gray-300"
+            onChange={(e) => {
+              SearchProduct(e), console.log("TEST");
+            }}
           />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-6 h-6 absolute top-2 right-3"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
+          <Link href="/search">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6 absolute top-2 right-3"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+              />
+            </svg>
+          </Link>
         </div>
 
         {/* Cart & Menu */}

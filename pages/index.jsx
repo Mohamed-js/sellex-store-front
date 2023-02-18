@@ -43,7 +43,7 @@ export default function Home({ store, products }) {
           aboutScroll={aboutScroll}
           contactScroll={contactScroll}
           store={store}
-          home
+          
         />
         <Store
           store={store}
