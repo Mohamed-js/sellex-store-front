@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { searchProduct } from "../helpers/Helper";
 import Cart from "./Cart";
 
 const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
@@ -13,6 +14,11 @@ const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
       document.body.style.position = "relative";
     }
   }
+
+  const handleSearch = async (e) => {
+    const products = await searchProduct(e.target.value, store.name);
+    console.log(products);
+  };
   return (
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
@@ -117,7 +123,7 @@ const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
             )}
           </ul>
           <input
-            onChange={(e) => SearchProduct(e)}
+            onChange={(e) => handleSearch(e)}
             type="search"
             className="w-full border p-2 pl-3 focus:outline-gray-300"
           />
@@ -128,7 +134,7 @@ const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
             placeholder="Search for products..."
             className="w-full border p-2 pl-3 focus:outline-gray-300"
             onChange={(e) => {
-              SearchProduct(e), console.log("TEST");
+              handleSearch(e);
             }}
           />
           <Link href="/search">
