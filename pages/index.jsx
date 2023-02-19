@@ -3,9 +3,15 @@ import Footer from "../components/Footer";
 import Store from "../components/Homies/Store";
 import Welcome from "../components/Homies/Welcome";
 import Navbar from "../components/Navbar";
-import { getProducts, getStore } from "../helpers/Helper";
+import { getProducts, getStore, searchProduct } from "../helpers/Helper";
 
 export default function Home({ store, products }) {
+  function checkSearchUrl() {
+    let url = window.location.href;
+    if (!url.match(/search/gi)) {
+      window.location.href = "/search";
+    }
+  }
   const [subdomain, setStore] = useState();
 
   useEffect(() => {
@@ -43,7 +49,7 @@ export default function Home({ store, products }) {
           aboutScroll={aboutScroll}
           contactScroll={contactScroll}
           store={store}
-          
+          checkSearchUrl={checkSearchUrl}
         />
         <Store
           store={store}

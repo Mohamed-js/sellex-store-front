@@ -4,7 +4,14 @@ import { useState } from "react";
 import { searchProduct } from "../helpers/Helper";
 import Cart from "./Cart";
 
-const Navbar = ({ handleSearch, aboutScroll, contactScroll, store, home }) => {
+const Navbar = ({
+  handleSearch,
+  aboutScroll,
+  contactScroll,
+  store,
+  home,
+  checkSearchUrl,
+}) => {
   const [storeOpened, setStoreOpened] = useState(false);
   function closeCart() {
     setStoreOpened((prev) => !prev);
@@ -118,20 +125,14 @@ const Navbar = ({ handleSearch, aboutScroll, contactScroll, store, home }) => {
               </Link>
             )}
           </ul>
-          <input
-            onChange={(e) => handleSearch(e)}
-            type="search"
-            className="w-full border p-2 pl-3 focus:outline-gray-300"
-          />
         </div>
         <div className="flex-1 relative text-gray-700 hidden lg:block">
           <input
-            type="text"
+            onMouseEnter={() => checkSearchUrl()}
+            onChange={(e) => handleSearch(e)}
+            type="search"
             placeholder="Search for products..."
             className="w-full border p-2 pl-3 focus:outline-gray-300"
-            onChange={(e) => {
-              handleSearch(e);
-            }}
           />
           <Link href="/search">
             <svg
@@ -194,24 +195,28 @@ const Navbar = ({ handleSearch, aboutScroll, contactScroll, store, home }) => {
 
       <div className="flex-1 relative text-gray-700 lg:hidden mx-4 mb-4">
         <input
-          type="text"
+          onMouseEnter={() => checkSearchUrl()}
+          onChange={(e) => handleSearch(e)}
+          type="search"
           placeholder="Search for products..."
           className="w-full border p-2 pl-3 focus:outline-gray-300"
         />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6 absolute top-2 right-3"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-          />
-        </svg>
+        <Link href="/search">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6 absolute top-2 right-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+        </Link>
       </div>
       {storeOpened && <Cart closeCart={closeCart} />}
     </div>
