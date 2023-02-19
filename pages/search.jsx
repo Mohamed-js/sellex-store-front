@@ -1,11 +1,15 @@
 import Navbar from "../components/Navbar";
-import { getProducts, getStore } from "../helpers/Helper";
+import { getProducts, getStore, searchProduct } from "../helpers/Helper";
 import React from "react";
 
 export default function Search({ store }) {
+  const handleSearch = async (e) => {
+    const products = await searchProduct(e.target.value, store.name);
+    console.log(products);
+  };
   return (
     <div>
-      <Navbar store={store} />
+      <Navbar store={store} handleSearch={handleSearch} />
     </div>
   );
 }

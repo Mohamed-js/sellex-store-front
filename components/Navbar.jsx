@@ -4,7 +4,7 @@ import { useState } from "react";
 import { searchProduct } from "../helpers/Helper";
 import Cart from "./Cart";
 
-const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
+const Navbar = ({ handleSearch, aboutScroll, contactScroll, store, home }) => {
   const [storeOpened, setStoreOpened] = useState(false);
   function closeCart() {
     setStoreOpened((prev) => !prev);
@@ -15,10 +15,6 @@ const Navbar = ({ SearchProduct, aboutScroll, contactScroll, store, home }) => {
     }
   }
 
-  const handleSearch = async (e) => {
-    const products = await searchProduct(e.target.value, store.name);
-    console.log(products);
-  };
   return (
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
