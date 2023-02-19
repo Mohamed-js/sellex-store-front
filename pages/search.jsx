@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { getProducts, getStore, searchProduct } from "../helpers/Helper";
+import { getStore, searchProduct } from "../helpers/Helper";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,32 +11,17 @@ export default function Search({ store }) {
   const [isLoading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const handleSearch = async (e) => {
-    // products = await searchProduct(e.target.value, store.name);
-    setSearchValue(e.target.value);
-    setProducts(
-      e.target.value.length > 0 &&
-        (await searchProduct(e.target.value, store.name))
-    );
-    if (e.target.value.length === 0) {
+  const handleSearch = async (value) => {
+    setSearchValue(value);
+    setProducts(value.length > 0 && (await searchProduct(value, store.name)));
+    if (value.length === 0) {
       setProducts([]);
     }
-    console.log(products);
   };
-  function checkSearchUrl() {
-    let url = window.location.href;
 
-    if (!url.match(/search/gi)) {
-      window.location.href = "/search";
-    }
-  }
   return (
     <div>
-      <Navbar
-        store={store}
-        handleSearch={handleSearch}
-        checkSearchUrl={checkSearchUrl}
-      />
+      <Navbar store={store} handleSearch={handleSearch} inSearch />
       {searchValue.length > 0 && products.length > 0 ? (
         <h3 className="ml-4 p-3">
           Showing {products.length} result{products.length > 1 && "s"} for
@@ -105,14 +90,14 @@ export async function getServerSideProps(context) {
     return { props: {} };
   }
   const subdomain = context.req.headers.host.split(".")[0];
-  const data = await getProducts(subdomain);
+  const store = await getStore(subdomain);
 
-  if (!data || data.message === "not found") {
+  if (!store || store.message === "not found") {
     return {
       notFound: true,
     };
   }
-  const store = await getStore(subdomain);
+
   store.options = JSON.parse(store.options);
-  return { props: { products: data, store: store } };
+  return { props: { store: store } };
 }

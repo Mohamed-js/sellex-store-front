@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { searchProduct } from "../helpers/Helper";
+import { useEffect, useState } from "react";
 import Cart from "./Cart";
+import { useRouter } from "next/router";
 
 const Navbar = ({
   handleSearch,
@@ -10,9 +10,11 @@ const Navbar = ({
   contactScroll,
   store,
   home,
-  checkSearchUrl,
+  inSearch,
 }) => {
   const [storeOpened, setStoreOpened] = useState(false);
+  const [searchContent, setSearchContent] = useState("");
+  const router = useRouter();
   function closeCart() {
     setStoreOpened((prev) => !prev);
     if (!storeOpened) {
@@ -21,6 +23,10 @@ const Navbar = ({
       document.body.style.position = "relative";
     }
   }
+
+  useEffect(() => {
+    inSearch && handleSearch(router.query.word);
+  }, []);
 
   return (
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
@@ -128,28 +134,39 @@ const Navbar = ({
         </div>
         <div className="flex-1 relative text-gray-700 hidden lg:block">
           <input
-            onMouseEnter={() => checkSearchUrl()}
-            onChange={(e) => handleSearch(e)}
+            defaultValue={inSearch && router.query.word}
+            onSelect={() => {
+              if (!inSearch) router.push(`/search?word=${searchContent}`);
+            }}
+            onClick={() => {
+              if (!inSearch) router.push(`/search?word=${searchContent}`);
+            }}
+            onChange={(e) => {
+              if (inSearch) handleSearch(e.target.value);
+              if (!inSearch) {
+                setSearchContent(e.target.value);
+              }
+            }}
             type="search"
             placeholder="Search for products..."
             className="w-full border p-2 pl-3 focus:outline-gray-300"
+            autoFocus={inSearch ? true : false}
           />
-          <Link href="/search">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6 absolute top-2 right-3"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-              />
-            </svg>
-          </Link>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6 absolute top-2 right-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
         </div>
 
         {/* Cart & Menu */}
@@ -195,8 +212,18 @@ const Navbar = ({
 
       <div className="flex-1 relative text-gray-700 lg:hidden mx-4 mb-4">
         <input
-          onMouseEnter={() => checkSearchUrl()}
-          onChange={(e) => handleSearch(e)}
+          onSelect={() => {
+            if (!inSearch) router.push(`/search?word=${searchContent}`);
+          }}
+          onClick={() => {
+            if (!inSearch) router.push(`/search?word=${searchContent}`);
+          }}
+          onChange={(e) => {
+            if (inSearch) handleSearch(e);
+            if (!inSearch) {
+              setSearchContent(e.target.value);
+            }
+          }}
           type="search"
           placeholder="Search for products..."
           className="w-full border p-2 pl-3 focus:outline-gray-300"
