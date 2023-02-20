@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Cart from "./Cart";
+import Sidebar from "./Sidebar";
 import { useRouter } from "next/router";
 
 const Navbar = ({
@@ -13,6 +14,7 @@ const Navbar = ({
   inSearch,
 }) => {
   const [storeOpened, setStoreOpened] = useState(false);
+  const [sidebarOpened, setSidebarOpened] = useState(false);
   const [searchContent, setSearchContent] = useState("");
   const router = useRouter();
   function closeCart() {
@@ -22,6 +24,20 @@ const Navbar = ({
     } else {
       document.body.style.position = "relative";
     }
+    if(openSidebar){
+      document.body.style.position = "relative";
+    }
+  }
+  function closeSidebar() {
+    setSidebarOpened((prev) => !prev);
+  }
+  function openCart() {
+    setStoreOpened(false);
+    setSidebarOpened(true);
+  }
+  function openSidebar() {
+    setStoreOpened(true);
+    setSidebarOpened(false);
   }
 
   useEffect(() => {
@@ -174,7 +190,10 @@ const Navbar = ({
           className="flex flex-1 justify-end mr-3 text-gray-700"
           style={{ color: store.options.navbar.cart.color }}
         >
-          <div className="mr-1 cursor-pointer" onClick={() => closeCart()}>
+          <div
+            className="mr-1 cursor-pointer outline-none border-none hover:bg-none"
+            onClick={() => closeCart()}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -191,7 +210,7 @@ const Navbar = ({
             </svg>
           </div>
 
-          <div className="sm:hidden">
+          <div className="sm:hidden" onClick={() => closeSidebar()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -245,7 +264,25 @@ const Navbar = ({
           </svg>
         </Link>
       </div>
-      {storeOpened && <Cart closeCart={closeCart} />}
+      {storeOpened && (
+        <Cart
+          closeCart={closeCart}
+          openCart={openCart}
+          setSidebarOpened={setSidebarOpened}
+          setStoreOpened={setStoreOpened}
+        />
+      )}
+      {sidebarOpened && (
+        <Sidebar
+          store={store}
+          closeSidebar={closeSidebar}
+          openSidebar={openSidebar}
+          setSidebarOpened={setSidebarOpened}
+          setStoreOpened={setStoreOpened}
+          contactScroll={contactScroll}
+          aboutScroll={aboutScroll}
+        />
+      )}
     </div>
   );
 };

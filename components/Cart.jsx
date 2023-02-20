@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Cart = ({ closeCart }) => {
+const Cart = ({ closeCart, setStoreOpened, setSidebarOpened, openCart }) => {
   const [storageProducts, setStorageProducts] = useState();
   useEffect(() => {
     setStorageProducts(JSON.parse(localStorage.getItem("products")) || []);
@@ -28,35 +28,70 @@ const Cart = ({ closeCart }) => {
                   <span className="ml-2 text-accent-7 text-sm ">CLOSE</span>
                 </div>
               </button>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                ></path>
-              </svg>
+              <div className="flex">
+                <svg
+                  onClick={() => {
+                    setStoreOpened(true), setSidebarOpened(false);
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                  ></path>
+                </svg>
+                <div className="sm:hidden">
+                  <svg
+                    onClick={() => openCart()}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
+                    />
+                  </svg>
+                </div>
+              </div>
             </header>
 
-            {(storageProducts &&
-              storageProducts.length > 0 &&
-              storageProducts.map((product, i) => {
-                return (
-                  <CartCard
-                    index={i}
-                    product={product}
-                    key={product.id + JSON.stringify(product.variants)}
-                    storageProducts={storageProducts}
-                    setStorageProducts={setStorageProducts}
-                  />
-                );
-              })) || (
+            {
+              storageProducts &&
+                storageProducts.length > 0 &&
+                storageProducts.map((product, i) => {
+                  return (
+                    <CartCard
+                      index={i}
+                      product={product}
+                      key={product.id + JSON.stringify(product.variants)}
+                      storageProducts={storageProducts}
+                      setStorageProducts={setStorageProducts}
+                    />
+                  );
+                })
+              //   ||  (
+              //   <div className="h-96 flex items-center justify-center uppercase flex-col">
+              //     <h2 className="text-lg">Cart is empty...</h2>
+              //     <Link href="/" onClick={() => closeCart()}>
+              //       <button className="rounded-md border border-transparent outline outline-orange-600 px-4 py-3 text-base font-medium shadow-sm hover:bg-orange-600 text-orange-600 hover:text-white sm:px-8 mt-5 transition duration-500 ">
+              //         Shop Now
+              //       </button>
+              //     </Link>
+              //   </div>
+              // )
+            }
+            {storageProducts && storageProducts.length === 0 && (
               <div className="h-96 flex items-center justify-center uppercase flex-col">
                 <h2 className="text-lg">Cart is empty...</h2>
                 <Link href="/" onClick={() => closeCart()}>
