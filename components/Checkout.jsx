@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { submitOrder } from "../helpers/Helper";
 
 const Checkout = ({ storageProducts, store }) => {
   const [order, setOrder] = useState({
@@ -13,10 +14,11 @@ const Checkout = ({ storageProducts, store }) => {
       }),
     ],
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(order);
+    const res = await submitOrder(order);
+    console.log(res);
   };
 
   const handleChange = (e) => {
