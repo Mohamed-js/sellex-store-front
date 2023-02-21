@@ -273,6 +273,7 @@ const Navbar = ({
           openCart={openCart}
           setSidebarOpened={setSidebarOpened}
           setStoreOpened={setStoreOpened}
+          store={store}
         />
       )}
       {sidebarOpened && (

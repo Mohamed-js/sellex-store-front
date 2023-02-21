@@ -1,8 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Checkout from "./Checkout";
 
-const Cart = ({ closeCart, setStoreOpened, setSidebarOpened, openCart }) => {
+const Cart = ({
+  closeCart,
+  setStoreOpened,
+  setSidebarOpened,
+  openCart,
+  store,
+}) => {
+  const [checkoutOpened, setCheckoutOpened] = useState(false);
   const [storageProducts, setStorageProducts] = useState();
   useEffect(() => {
     setStorageProducts(JSON.parse(localStorage.getItem("products")) || []);
@@ -66,31 +74,73 @@ const Cart = ({ closeCart, setStoreOpened, setSidebarOpened, openCart }) => {
               </div>
             </header>
 
-            {
-              storageProducts &&
-                storageProducts.length > 0 &&
-                storageProducts.map((product, i) => {
-                  return (
-                    <CartCard
-                      index={i}
-                      product={product}
-                      key={product.id + JSON.stringify(product.variants)}
-                      storageProducts={storageProducts}
-                      setStorageProducts={setStorageProducts}
-                    />
-                  );
-                })
-              //   ||  (
-              //   <div className="h-96 flex items-center justify-center uppercase flex-col">
-              //     <h2 className="text-lg">Cart is empty...</h2>
-              //     <Link href="/" onClick={() => closeCart()}>
-              //       <button className="rounded-md border border-transparent outline outline-orange-600 px-4 py-3 text-base font-medium shadow-sm hover:bg-orange-600 text-orange-600 hover:text-white sm:px-8 mt-5 transition duration-500 ">
-              //         Shop Now
-              //       </button>
-              //     </Link>
-              //   </div>
-              // )
-            }
+            {!checkoutOpened && (
+              <>
+                {storageProducts &&
+                  storageProducts.length > 0 &&
+                  storageProducts.map((product, i) => {
+                    return (
+                      <CartCard
+                        index={i}
+                        product={product}
+                        key={product.id + JSON.stringify(product.variants)}
+                        storageProducts={storageProducts}
+                        setStorageProducts={setStorageProducts}
+                      />
+                    );
+                  })}
+
+                {storageProducts && storageProducts.length > 0 && (
+                  <div className="sticky bottom-0 bg-white flex-shrink-0 px-3 py-3 sm:px-3 w-full right-0 left-0 bg-accent-0 border-t text-sm">
+                    <ul className="pb-2">
+                      <li className="flex justify-between py-1">
+                        <span>Subtotal</span>
+                        <span>
+                          $
+                          {storageProducts.reduce(
+                            (accumulator, product) =>
+                              accumulator +
+                              product.quantity * product.selling_price,
+                            0
+                          )}
+                        </span>
+                      </li>
+                      <li className="flex justify-between py-1">
+                        <span>Shipping</span>
+                        <span className="font-semibold">FREE</span>
+                      </li>
+                      <li className="flex justify-between py-1"></li>
+                    </ul>
+                    <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
+                      <span className="text-lg">Total</span>
+                      <span>
+                        $
+                        {storageProducts.reduce(
+                          (accumulator, product) =>
+                            accumulator +
+                            product.quantity * product.selling_price,
+                          0
+                        )}
+                      </span>
+                    </div>
+                    <div>
+                      <button
+                        className="text-lg w-full bg-black text-white pt-4 pb-4 text-center "
+                        onClick={() => setCheckoutOpened(true)}
+                        data-variant="flat"
+                      >
+                        Proceed to Checkout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+
+            {checkoutOpened && (
+              <Checkout storageProducts={storageProducts} store={store} />
+            )}
+
             {storageProducts && storageProducts.length === 0 && (
               <div className="h-96 flex items-center justify-center uppercase flex-col">
                 <h2 className="text-lg">Cart is empty...</h2>
@@ -99,43 +149,6 @@ const Cart = ({ closeCart, setStoreOpened, setSidebarOpened, openCart }) => {
                     Shop Now
                   </button>
                 </Link>
-              </div>
-            )}
-            {storageProducts && storageProducts.length > 0 && (
-              <div className="sticky bottom-0 bg-white flex-shrink-0 px-3 py-3 sm:px-3 w-full right-0 left-0 bg-accent-0 border-t text-sm">
-                <ul className="pb-2">
-                  <li className="flex justify-between py-1">
-                    <span>Subtotal</span>
-                    <span>
-                      $
-                      {storageProducts.reduce(
-                        (accumulator, product) =>
-                          accumulator +
-                          product.quantity * product.selling_price,
-                        0
-                      )}
-                    </span>
-                  </li>
-                  <li className="flex justify-between py-1">
-                    <span>Shipping</span>
-                    <span className="font-semibold">FREE</span>
-                  </li>
-                  <li className="flex justify-between py-1"></li>
-                </ul>
-                <div className="flex justify-between border-t border-accent-2 py-3 font-bold mb-2">
-                  <span>Total</span>
-                  <span>
-                    $
-                    {storageProducts.reduce(
-                      (accumulator, product) =>
-                        accumulator + product.quantity * product.selling_price,
-                      0
-                    )}
-                  </span>
-                </div>
-                <div className="text-lg w-full bg-black text-white pt-4 pb-4 text-center ">
-                  <a data-variant="flat">Proceed to Checkout</a>
-                </div>
               </div>
             )}
           </div>
