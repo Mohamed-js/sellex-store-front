@@ -24,7 +24,7 @@ const Navbar = ({
     } else {
       document.body.style.position = "relative";
     }
-    if(openSidebar){
+    if (openSidebar) {
       document.body.style.position = "relative";
     }
   }
@@ -210,7 +210,10 @@ const Navbar = ({
             </svg>
           </div>
 
-          <div className="sm:hidden" onClick={() => closeSidebar()}>
+          <div
+            className="sm:hidden hover:cursor-pointer"
+            onClick={() => closeSidebar()}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
