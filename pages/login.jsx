@@ -15,7 +15,7 @@ const Login = () => {
       <>
         <button
           onClick={() => signIn()}
-          className="mt-10 w-full justify-center flex items-center py-2 px-4 text-sm uppercase rounded bg-white hover:bg-gray-100 text-indigo-500 border border-transparent hover:border-transparent hover:text-gray-700 shadow-md hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+          className="mt-10g w-full justify-center flex items-center py-2 px-4 text-sm uppercase rounded bg-white hover:bg-gray-100 text-indigo-500 border border-transparent hover:border-transparent hover:text-gray-700 shadow-md hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
         >
           Login
         </button>
@@ -128,9 +128,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// .env
-
-// NEXTAUTH_URL=http://localhost:3000
-
-// JWT_SECRET=qLx4+6jj3IUE5EmN0EQFg7otXS/DAgBboO4INtyO87I=
