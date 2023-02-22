@@ -5,6 +5,7 @@ import Welcome from "../components/Homies/Welcome";
 import Navbar from "../components/Navbar";
 import { getProducts, getStore } from "../helpers/Helper";
 
+
 export default function Home({ store, products }) {
   const [subdomain, setStore] = useState();
 
