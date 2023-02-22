@@ -83,6 +83,7 @@ export default function Product({ product, defVariants }) {
         store={product.store}
         cartOpenedFromOutside={cartOpened}
         setCartOpenedFromOutside={setCartOpened}
+        inProductPage
       />
       <Head>
         <title>

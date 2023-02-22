@@ -13,18 +13,20 @@ const Navbar = ({
   store,
   home,
   inSearch,
+  inProductPage,
   cartOpenedFromOutside,
   setCartOpenedFromOutside,
 }) => {
   const [dialog, setDialog] = useState({ opened: false, data: "" });
-  const [cartClosed, setCartClosed] = useState(false);
+  const [cartOpened, setCartOpened] = useState(false);
   const [sidebarOpened, setSidebarOpened] = useState(false);
   const [searchContent, setSearchContent] = useState("");
   const router = useRouter();
-  function closeCart() {
-    setCartOpenedFromOutside(false);
-    setCartClosed((prev) => !prev);
-    if (!cartClosed) {
+  function openCart() {
+    console.log("Openning Cart");
+    if (inProductPage) setCartOpenedFromOutside(false);
+    setCartOpened(true);
+    if (!cartOpened) {
       document.body.style.position = "fixed";
     } else {
       document.body.style.position = "relative";
@@ -33,17 +35,21 @@ const Navbar = ({
       document.body.style.position = "relative";
     }
   }
-  function closeSidebar() {
-    setSidebarOpened((prev) => !prev);
-  }
-  function openCart() {
-    setCartClosed(false);
-    setCartOpenedFromOutside(true);
+
+  function closeCart() {
+    console.log("Closing Cart");
+    setCartOpened(false);
+    if (inProductPage) setCartOpenedFromOutside(false);
     setSidebarOpened(true);
   }
+
+  function closeSidebar() {
+    setSidebarOpened(false);
+  }
+
   function openSidebar() {
-    setCartClosed(true);
-    setCartOpenedFromOutside(false);
+    setCartOpened(true);
+    if (inProductPage) setCartOpenedFromOutside(false);
     setSidebarOpened(false);
   }
 
@@ -203,7 +209,7 @@ const Navbar = ({
         >
           <div
             className="mr-1 cursor-pointer outline-none border-none hover:bg-none"
-            onClick={() => closeCart()}
+            onClick={() => openCart()}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -278,12 +284,12 @@ const Navbar = ({
           </svg>
         </Link>
       </div>
-      {(cartClosed || cartOpenedFromOutside) && (
+      {(cartOpened || cartOpenedFromOutside) && (
         <Cart
-          closeCart={closeCart}
           openCart={openCart}
+          closeCart={closeCart}
           setSidebarOpened={setSidebarOpened}
-          setCartClosed={setCartClosed}
+          setCartOpened={setCartOpened}
           store={store}
           showDialog={showDialog}
         />
@@ -294,7 +300,7 @@ const Navbar = ({
           closeSidebar={closeSidebar}
           openSidebar={openSidebar}
           setSidebarOpened={setSidebarOpened}
-          setCartClosed={setCartClosed}
+          setCartOpened={setCartOpened}
           contactScroll={contactScroll}
           aboutScroll={aboutScroll}
         />

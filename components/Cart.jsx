@@ -3,14 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Checkout from "./Checkout";
 
-const Cart = ({
-  closeCart,
-  setCartClosed,
-  setSidebarOpened,
-  openCart,
-  store,
-  showDialog,
-}) => {
+const Cart = ({ closeCart, openCart, store, showDialog }) => {
   const [checkoutOpened, setCheckoutOpened] = useState(false);
   const [storageProducts, setStorageProducts] = useState();
   useEffect(() => {
@@ -39,9 +32,7 @@ const Cart = ({
               </button>
               <div className="flex">
                 <svg
-                  onClick={() => {
-                    setCartClosed(true), setSidebarOpened(false);
-                  }}
+                  onClick={() => closeCart()}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
