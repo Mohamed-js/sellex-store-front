@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Cart from "./Cart";
 import Sidebar from "./Sidebar";
 import { useRouter } from "next/router";
+import Dialog from "./Dialog";
 
 const Navbar = ({
   handleSearch,
@@ -12,14 +13,18 @@ const Navbar = ({
   store,
   home,
   inSearch,
+  cartOpenedFromOutside,
+  setCartOpenedFromOutside,
 }) => {
-  const [storeOpened, setStoreOpened] = useState(false);
+  const [dialog, setDialog] = useState({ opened: false, data: "" });
+  const [cartClosed, setCartClosed] = useState(false);
   const [sidebarOpened, setSidebarOpened] = useState(false);
   const [searchContent, setSearchContent] = useState("");
   const router = useRouter();
   function closeCart() {
-    setStoreOpened((prev) => !prev);
-    if (!storeOpened) {
+    setCartOpenedFromOutside(false);
+    setCartClosed((prev) => !prev);
+    if (!cartClosed) {
       document.body.style.position = "fixed";
     } else {
       document.body.style.position = "relative";
@@ -32,12 +37,18 @@ const Navbar = ({
     setSidebarOpened((prev) => !prev);
   }
   function openCart() {
-    setStoreOpened(false);
+    setCartClosed(false);
+    setCartOpenedFromOutside(true);
     setSidebarOpened(true);
   }
   function openSidebar() {
-    setStoreOpened(true);
+    setCartClosed(true);
+    setCartOpenedFromOutside(false);
     setSidebarOpened(false);
+  }
+
+  function showDialog(data) {
+    setDialog({ opened: true, data });
   }
 
   useEffect(() => {
@@ -267,13 +278,14 @@ const Navbar = ({
           </svg>
         </Link>
       </div>
-      {storeOpened && (
+      {(cartClosed || cartOpenedFromOutside) && (
         <Cart
           closeCart={closeCart}
           openCart={openCart}
           setSidebarOpened={setSidebarOpened}
-          setStoreOpened={setStoreOpened}
+          setCartClosed={setCartClosed}
           store={store}
+          showDialog={showDialog}
         />
       )}
       {sidebarOpened && (
@@ -282,11 +294,13 @@ const Navbar = ({
           closeSidebar={closeSidebar}
           openSidebar={openSidebar}
           setSidebarOpened={setSidebarOpened}
-          setStoreOpened={setStoreOpened}
+          setCartClosed={setCartClosed}
           contactScroll={contactScroll}
           aboutScroll={aboutScroll}
         />
       )}
+
+      {dialog.opened && <Dialog data={dialog.data} setDialog={setDialog} />}
     </div>
   );
 };

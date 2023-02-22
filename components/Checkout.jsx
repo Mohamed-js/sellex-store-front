@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { submitOrder } from "../helpers/Helper";
 
-const Checkout = ({ storageProducts, store }) => {
+const Checkout = ({ storageProducts, store, closeCart, showDialog }) => {
   const [order, setOrder] = useState({
     store: store.name,
     order_items: [
@@ -19,6 +19,12 @@ const Checkout = ({ storageProducts, store }) => {
 
     const res = await submitOrder(order);
     console.log(res);
+    if (res.message && res.message === "Order created.")
+      localStorage.setItem("products", JSON.stringify([]));
+    // Close cart
+    closeCart();
+    // Show pop up
+    showDialog("We successfully received your order..!");
   };
 
   const handleChange = (e) => {

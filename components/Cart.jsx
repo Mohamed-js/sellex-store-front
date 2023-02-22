@@ -5,10 +5,11 @@ import Checkout from "./Checkout";
 
 const Cart = ({
   closeCart,
-  setStoreOpened,
+  setCartClosed,
   setSidebarOpened,
   openCart,
   store,
+  showDialog,
 }) => {
   const [checkoutOpened, setCheckoutOpened] = useState(false);
   const [storageProducts, setStorageProducts] = useState();
@@ -39,7 +40,7 @@ const Cart = ({
               <div className="flex">
                 <svg
                   onClick={() => {
-                    setStoreOpened(true), setSidebarOpened(false);
+                    setCartClosed(true), setSidebarOpened(false);
                   }}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -138,7 +139,12 @@ const Cart = ({
             )}
 
             {checkoutOpened && (
-              <Checkout storageProducts={storageProducts} store={store} />
+              <Checkout
+                storageProducts={storageProducts}
+                store={store}
+                closeCart={closeCart}
+                showDialog={showDialog}
+              />
             )}
 
             {storageProducts && storageProducts.length === 0 && (

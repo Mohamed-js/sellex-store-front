@@ -20,10 +20,12 @@ export const searchProduct = async (value, store) => {
 };
 
 export const submitOrder = async (order) => {
-  console.log(order);
   const res = await fetch(host + `/api/v1/orders`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
     method: "POST",
-    body: order,
+    body: JSON.stringify(order),
   });
   const data = await res.json();
   return data;

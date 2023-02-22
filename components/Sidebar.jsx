@@ -7,7 +7,7 @@ export default function Sidebar({
   openSidebar,
   closeSidebar,
   setSidebarOpened,
-  setStoreOpened,
+  setCartClosed,
 }) {
   function sidebarWidth() {
     window.innerWidth > 640 && setSidebarOpened(false);
@@ -54,7 +54,7 @@ export default function Sidebar({
                 <div className="sm:hidden overflow-hidden outline-none">
                   <svg
                     onClick={() => {
-                      setSidebarOpened(true), setStoreOpened(false);
+                      setSidebarOpened(true), setCartClosed(false);
                     }}
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

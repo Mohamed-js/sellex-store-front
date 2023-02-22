@@ -2,8 +2,10 @@ import React from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const Login = () => {
-  const { data: session } = useSession();
-  if (session) {
+  const { data: session, status } = useSession();
+  console.log(session);
+  console.log(status);
+  if (status === "authenticated") {
     return (
       <>
         Signed in as {session.user.email} <br />
@@ -12,14 +14,14 @@ const Login = () => {
     );
   } else {
     return (
-      <>
+      <div className="flex flex-row items-center justify-center h-96">
         <button
           onClick={() => signIn()}
-          className="mt-10g w-full justify-center flex items-center py-2 px-4 text-sm uppercase rounded bg-white hover:bg-gray-100 text-indigo-500 border border-transparent hover:border-transparent hover:text-gray-700 shadow-md hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+          className="mt-10  justify-center flex items-center py-2 px-4 text-sm uppercase rounded bg-white hover:bg-gray-100 text-indigo-500 border border-transparent hover:border-transparent hover:text-gray-700 shadow-md hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
         >
           Login
         </button>
-      </>
+      </div>
     );
   }
   //   } else {

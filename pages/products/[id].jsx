@@ -9,6 +9,7 @@ function cn(...classes) {
 }
 
 export default function Product({ product, defVariants }) {
+  const [cartOpened, setCartOpened] = useState(false);
   const [selectedVariants, setSelectedVariants] = useState(defVariants);
   let storageProducts =
     (typeof window !== "undefined" &&
@@ -24,13 +25,13 @@ export default function Product({ product, defVariants }) {
   };
 
   function AddToLocalStorage() {
+    handleCartOpen();
     const searchedProduct = storageProducts.filter(
       (stProduct) =>
         stProduct.id === product.id &&
         JSON.stringify(stProduct.variants) === JSON.stringify(selectedVariants)
     )[0];
 
-    console.log(searchedProduct);
     if (searchedProduct) {
       const productsWithoutSelectedProduct = storageProducts.filter(
         (stProduct) =>
@@ -42,7 +43,6 @@ export default function Product({ product, defVariants }) {
       localStorage.setItem(
         "products",
         JSON.stringify([
-          ...productsWithoutSelectedProduct,
           {
             id: product.id,
             name: product.name,
@@ -52,13 +52,13 @@ export default function Product({ product, defVariants }) {
             variants: selectedVariants,
             quantity: searchedProduct.quantity + 1,
           },
+          ...productsWithoutSelectedProduct,
         ])
       );
     } else {
       localStorage.setItem(
         "products",
         JSON.stringify([
-          ...storageProducts,
           {
             id: product.id,
             name: product.name,
@@ -68,13 +68,22 @@ export default function Product({ product, defVariants }) {
             variants: selectedVariants,
             quantity: 1,
           },
+          ...storageProducts,
         ])
       );
     }
   }
+
+  function handleCartOpen() {
+    setCartOpened(true);
+  }
   return (
     <>
-      <Navbar store={product.store} />
+      <Navbar
+        store={product.store}
+        cartOpenedFromOutside={cartOpened}
+        setCartOpenedFromOutside={setCartOpened}
+      />
       <Head>
         <title>
           {product.store.name.toUpperCase()} - {product.name}
