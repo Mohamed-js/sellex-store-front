@@ -1,4 +1,5 @@
 import Navbar from "../../components/Navbar";
+import ProductCard from "../../components/ProductCard";
 import { getStore, searchProduct } from "../../helpers/Helper";
 import React, { useState } from "react";
 import Image from "next/image";
@@ -40,44 +41,45 @@ export default function Search({ store }) {
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products &&
             products.map((product) => {
-              return (
-                <>
-                  <Link
-                    href={`/products/${product.id}`}
-                    className="group"
-                    key={product.id}
-                  >
-                    <div
-                      className={cn(
-                        "aspect-[5/6] aspect-h-1 w-full overflow-hidden rounded-lg  xl:aspect-w-7 xl:aspect-h-8 relative",
-                        isLoading && "bg-gray-100"
-                      )}
-                    >
-                      <Image
-                        alt={product.name}
-                        src={`${product.image}`}
-                        fill
-                        className={cn(
-                          "object-contain duration-700 ease-in-out group-hover:opacity-75	",
-                          isLoading
-                            ? "scale-110 blur-2xl grayscale"
-                            : "scale-100 blur-0 grayscale-0"
-                        )}
-                        onLoadingComplete={() => setLoading(false)}
-                      />
-                    </div>
-                    <div className="mt-4 flex items-center justify-between text-base font-medium text-gray-900 p-3">
-                      <h3>{product.name}</h3>
-                      <p>${product.selling_price}</p>
-                    </div>
-                    <p className="mt-1 text-sm italic text-gray-500 p-3 ">
-                      {product.name}
-                    </p>
-                    <div className="text-left p-3"></div>
-                    <div className="text-left p-3"></div>
-                  </Link>
-                </>
-              );
+              return <ProductCard product={product} key={product.id} />;
+              // return (
+              //   <>
+              //     <Link
+              //       href={`/products/${product.id}`}
+              //       className="group"
+              //       key={product.id}
+              //     >
+              //       <div
+              //         className={cn(
+              //           "aspect-[5/6] aspect-h-1 w-full overflow-hidden rounded-lg  xl:aspect-w-7 xl:aspect-h-8 relative",
+              //           isLoading && "bg-gray-100"
+              //         )}
+              //       >
+              //         <Image
+              //           alt={product.name}
+              //           src={`${product.image}`}
+              //           fill
+              //           className={cn(
+              //             "object-contain duration-700 ease-in-out group-hover:opacity-75	",
+              //             isLoading
+              //               ? "scale-110 blur-2xl grayscale"
+              //               : "scale-100 blur-0 grayscale-0"
+              //           )}
+              //           onLoadingComplete={() => setLoading(false)}
+              //         />
+              //       </div>
+              //       <div className="mt-4 flex items-center justify-between text-base font-medium text-gray-900 p-3">
+              //         <h3>{product.name}</h3>
+              //         <p>${product.selling_price}</p>
+              //       </div>
+              //       <p className="mt-1 text-sm italic text-gray-500 p-3 ">
+              //         {product.name}
+              //       </p>
+              //       <div className="text-left p-3"></div>
+              //       <div className="text-left p-3"></div>
+              //     </Link>
+              //   </>
+              // );
             })}
         </div>
       </div>
