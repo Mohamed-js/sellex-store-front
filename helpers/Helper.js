@@ -1,5 +1,5 @@
-const host = "http://127.0.0.1:3001";
-// const host = "https://sellex.onrender.com/";
+// const host = "http://localhost:3001/";
+const host = "https://sellex-store.onrender.com/";
 
 export const getStore = async (store) => {
   const res = await fetch(host + `/api/v1/stores/1?store=${store}`);
@@ -41,6 +41,16 @@ export const getStaticProduct = async (id) => {
 export const getStaticProducts = async () => {
   const res = await fetch(host + `/api/v1/products`, {
     method: "POST",
+  });
+  const data = await res.json();
+  return data;
+};
+
+export const getStaticStores = async () => {
+  const res = await fetch(host + `/api/v1/stores`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
   const data = await res.json();
   return data;
