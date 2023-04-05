@@ -1,11 +1,20 @@
 import Head from "next/head";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Cover from "./Cover";
 import About from "./About";
 import Contact from "./Contact";
 import Products from "./Products";
+import Cart from "../Cart";
+// import { Helmet } from "./Helmet";
 
-export default function Store({ store, products, aboutRef, contactRef }) {
+export default function Store({
+  OpenStore,
+  openStore,
+  store,
+  products,
+  aboutRef,
+  contactRef,
+}) {
   let productsRef = useRef();
 
   const productsScroll = (e) => {
@@ -20,11 +29,10 @@ export default function Store({ store, products, aboutRef, contactRef }) {
     <div>
       <Head>
         <title>{store.name.toUpperCase()} - SellEx</title>
-        <link
-          rel="shortcut icon"
-          href={`https://res.cloudinary.com/atefcloud/image/upload/${store.image_blob.key}`}
-        />
+        <link rel="shortcut icon" href={`${store.image}`} />
       </Head>
+      {/* <Helmet store={store} /> */}
+      {openStore && <Cart products={products} OpenStore={OpenStore} />}
       <Cover scrollHandler={productsScroll} store={store} />
 
       <div

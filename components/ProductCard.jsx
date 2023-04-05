@@ -19,7 +19,7 @@ export default function ProductCard({ product }) {
       >
         <Image
           alt={product.name}
-          src={`https://res.cloudinary.com/atefcloud/image/upload/${product.image_blob.key}`}
+          src={`${product.image}`}
           fill
           className={cn(
             "object-contain duration-700 ease-in-out group-hover:opacity-75	",
@@ -35,6 +35,8 @@ export default function ProductCard({ product }) {
         <p>${product.selling_price}</p>
       </div>
       <p className="mt-1 text-sm italic text-gray-500 p-3 ">{product.name}</p>
+      <div className="text-left p-3"></div>
+      <div className="text-left p-3"></div>
     </Link>
   );
 }
