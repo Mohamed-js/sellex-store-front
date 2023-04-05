@@ -4,8 +4,7 @@ import Link from "next/link";
 
 const Login = () => {
   // const { data: session, status } = useSession();
-  // console.log(session);
-  // console.log(status);
+
   // if (status === "authenticated") {
   //   return (
   //     <>

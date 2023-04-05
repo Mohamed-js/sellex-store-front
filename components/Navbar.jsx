@@ -23,7 +23,6 @@ const Navbar = ({
   const [searchContent, setSearchContent] = useState("");
   const router = useRouter();
   function openCart() {
-    console.log("Openning Cart");
     if (inProductPage) setCartOpenedFromOutside(false);
     setCartOpened(true);
     if (!cartOpened) {
@@ -37,7 +36,6 @@ const Navbar = ({
   }
 
   function closeCart() {
-    console.log("Closing Cart");
     setCartOpened(false);
     if (inProductPage) setCartOpenedFromOutside(false);
     setSidebarOpened(true);
@@ -65,7 +63,7 @@ const Navbar = ({
     <div style={{ backgroundColor: `${store.options.navbar.bg_color}` }}>
       <div className="flex justify-between h-20 items-center">
         <div className="flex items-center flex-1">
-          <Link href="/">
+          <Link href={`/${store.name.toLowerCase()}`}>
             <div className="relative w-10 h-10 m-3 mx-4">
               <Image
                 alt="Logo"
@@ -169,10 +167,18 @@ const Navbar = ({
           <input
             defaultValue={inSearch && router.query.word}
             onSelect={() => {
-              if (!inSearch) router.push(`/search?word=${searchContent}`);
+              if (!inSearch) {
+                router.push(
+                  `/${store.name.toLowerCase()}/search?word=${searchContent}`
+                );
+              }
             }}
             onClick={() => {
-              if (!inSearch) router.push(`/search?word=${searchContent}`);
+              if (!inSearch) {
+                router.push(
+                  `/${store.name.toLowerCase()}/search?word=${searchContent}`
+                );
+              }
             }}
             onChange={(e) => {
               if (inSearch) handleSearch(e.target.value);
@@ -252,13 +258,19 @@ const Navbar = ({
       <div className="flex-1 relative text-gray-700 lg:hidden mx-4 mb-4">
         <input
           onSelect={() => {
-            if (!inSearch) router.push(`/search?word=${searchContent}`);
+            if (!inSearch)
+              router.push(
+                `/${store.name.toLowerCase()}/search?word=${searchContent}`
+              );
           }}
           onClick={() => {
-            if (!inSearch) router.push(`/search?word=${searchContent}`);
+            if (!inSearch)
+              router.push(
+                `/${store.name.toLowerCase()}/search?word=${searchContent}`
+              );
           }}
           onChange={(e) => {
-            if (inSearch) handleSearch(e);
+            if (inSearch) handleSearch(e.target.value);
             if (!inSearch) {
               setSearchContent(e.target.value);
             }
@@ -267,7 +279,7 @@ const Navbar = ({
           placeholder="Search for products..."
           className="w-full border p-2 pl-3 focus:outline-gray-300"
         />
-        <Link href="/search">
+        <Link href={`/${store.name.toLowerCase()}/search?word=`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -16,13 +16,13 @@ export default function StorePage({ store, products }) {
   };
   const contactScroll = (e) => {
     e.preventDefault();
-    console.log(contactRef);
+
     contactRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
-  console.log(store);
+
   return (
     <>
       <Navbar

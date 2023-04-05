@@ -18,7 +18,7 @@ const Checkout = ({ storageProducts, store, closeCart, showDialog }) => {
     e.preventDefault();
 
     const res = await submitOrder(order);
-    console.log(res);
+
     if (res.message && res.message === "Order created.")
       localStorage.setItem("products", JSON.stringify([]));
     // Close cart

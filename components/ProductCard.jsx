@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
           src={`${product.image}`}
           fill
           className={cn(
-            "object-contain duration-700 ease-in-out group-hover:opacity-75	",
+            "object-cover hover:scale-105 hover:rounded-lg duration-700 ease-in-out group-hover:opacity-75	",
             isLoading
               ? "scale-110 blur-2xl grayscale"
               : "scale-100 blur-0 grayscale-0"

@@ -1,5 +1,5 @@
-import Navbar from "../components/Navbar";
-import { getStore, searchProduct } from "../helpers/Helper";
+import Navbar from "../../components/Navbar";
+import { getStore, searchProduct } from "../../helpers/Helper";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -86,11 +86,8 @@ export default function Search({ store }) {
 }
 
 export async function getServerSideProps(context) {
-  if (context.req.headers.host.split(".").length <= 1) {
-    return { props: {} };
-  }
-  const subdomain = context.req.headers.host.split(".")[0];
-  const store = await getStore(subdomain);
+  const storeName = context.params.store;
+  const store = await getStore(storeName);
 
   if (!store || store.message === "not found") {
     return {
