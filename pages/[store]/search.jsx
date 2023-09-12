@@ -21,7 +21,7 @@ export default function Search({ store }) {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Navbar store={store} handleSearch={handleSearch} inSearch />
       {searchValue.length > 0 && products.length > 0 ? (
         <h3 className="ml-4 p-3">
@@ -37,7 +37,7 @@ export default function Search({ store }) {
       ) : (
         ""
       )}
-      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8 mt-6">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8 mt-6 p-4">
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           {products &&
             products.map((product) => {
@@ -83,6 +83,12 @@ export default function Search({ store }) {
             })}
         </div>
       </div>
+      <style jsx global>{`
+        body {
+          background-color: ${store.options.body.bg_color};
+          color: ${store.options.body.color};
+        }
+      `}</style>
     </div>
   );
 }

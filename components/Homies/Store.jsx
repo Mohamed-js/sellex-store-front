@@ -25,28 +25,32 @@ export default function Store({
     });
   };
 
+  const header = `${store.name.toUpperCase()} - SellEx`;
+
   return (
-    <div>
+    <>
       <Head>
-        <title>{store.name.toUpperCase()} - SellEx</title>
+        <title>{header}</title>
         <link rel="shortcut icon" href={`${store.image}`} />
       </Head>
-      {/* <Helmet store={store} /> */}
-      {openStore && <Cart products={products} OpenStore={OpenStore} />}
-      <Cover scrollHandler={productsScroll} store={store} />
+      <div>
+        {/* <Helmet store={store} /> */}
+        {openStore && <Cart products={products} OpenStore={OpenStore} />}
+        <Cover scrollHandler={productsScroll} store={store} />
 
-      <div
-        ref={productsRef}
-        className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-      >
-        <Products products={products} />
-        <div ref={aboutRef}>
-          <About />
-        </div>
-        <div ref={contactRef}>
-          <Contact />
+        <div
+          ref={productsRef}
+          className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8"
+        >
+          <Products products={products} />
+          <div ref={aboutRef}>
+            <About />
+          </div>
+          <div ref={contactRef}>
+            <Contact />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

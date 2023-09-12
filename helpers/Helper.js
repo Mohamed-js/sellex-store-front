@@ -33,7 +33,11 @@ export const submitOrder = async (order) => {
 
 // For static building
 export const getStaticProduct = async (id) => {
-  const res = await fetch(host + `/api/v1/products/${id}`);
+  const res = await fetch(host + `/api/v1/products/${id}`, {
+    next: {
+      revalidate: 0,
+    },
+  });
   const data = await res.json();
   return data;
 };
@@ -41,6 +45,9 @@ export const getStaticProduct = async (id) => {
 export const getStaticProducts = async () => {
   const res = await fetch(host + `/api/v1/products`, {
     method: "POST",
+    next: {
+      revalidate: 0,
+    },
   });
   const data = await res.json();
   return data;
@@ -50,6 +57,9 @@ export const getStaticStores = async () => {
   const res = await fetch(host + `/api/v1/stores`, {
     headers: {
       "Content-Type": "application/json",
+    },
+    next: {
+      revalidate: 0,
     },
   });
   const data = await res.json();

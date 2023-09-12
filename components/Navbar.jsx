@@ -79,7 +79,7 @@ const Navbar = ({
             className="sm:flex text-gray-700 pr-2 hidden"
           >
             {store.options.navbar.links.home.exists && (
-              <Link href={home ? "#" : "/"}>
+              <Link href={home ? "" : `/${store.name.toLowerCase()}`}>
                 <li className="flex items-end mr-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +105,7 @@ const Navbar = ({
             )}
             {store.options.navbar.links.about.exists && (
               <Link
-                href={home ? "" : "/#about"}
+                href={home ? "" : `/${store.name.toLowerCase()}/#about`}
                 onClick={aboutScroll}
                 className="cursor-pointer"
               >
@@ -134,7 +134,7 @@ const Navbar = ({
             )}
             {store.options.navbar.links.contact.exists && (
               <Link
-                href={home ? "" : "/#contact"}
+                href={home ? "" : `/${store.name.toLowerCase()}/#contact`}
                 onClick={contactScroll}
                 className="cursor-pointer"
               >
@@ -189,6 +189,7 @@ const Navbar = ({
             type="search"
             placeholder="Search for products..."
             className="w-full border p-2 pl-3 focus:outline-gray-300"
+            style={{ backgroundColor: `${store.options.navbar.bg_color}` }}
             autoFocus={inSearch ? true : false}
           />
 

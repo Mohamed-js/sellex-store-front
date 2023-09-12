@@ -24,7 +24,7 @@ export default function StorePage({ store, products }) {
   };
 
   return (
-    <>
+    <div>
       <Navbar
         aboutScroll={aboutScroll}
         contactScroll={contactScroll}
@@ -37,7 +37,13 @@ export default function StorePage({ store, products }) {
         contactRef={contactRef}
       />
       <Footer />
-    </>
+      <style jsx global>{`
+        body {
+          background-color: ${store.options.body.bg_color};
+          color: ${store.options.body.color};
+        }
+      `}</style>
+    </div>
   );
 }
 

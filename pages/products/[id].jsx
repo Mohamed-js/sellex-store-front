@@ -77,20 +77,19 @@ export default function Product({ product, defVariants }) {
   function handleCartOpen() {
     setCartOpened(true);
   }
+  const header = `${product.store.name.toUpperCase()} - ${product.name}`;
   return (
     <>
+      <Head>
+        <title>{header}</title>
+        <link rel="shortcut icon" href={`${product.store.image}`} />
+      </Head>
       <Navbar
         store={product.store}
         cartOpenedFromOutside={cartOpened}
         setCartOpenedFromOutside={setCartOpened}
         inProductPage
       />
-      <Head>
-        <title>
-          {product.store.name.toUpperCase()} - {product.name}
-        </title>
-        <link rel="shortcut icon" href={`${product.store.image}`} />
-      </Head>
       <div className="flex flex-col justify-between">
         <div className="mx-auto mt-16 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="mx-auto flex flex-col sm:flex-row">
@@ -207,6 +206,12 @@ export default function Product({ product, defVariants }) {
         </div>
       </div>
       <Footer />
+      <style jsx global>{`
+        body {
+          background-color: ${product.store.options.body.bg_color};
+          color: ${product.store.options.body.color};
+        }
+      `}</style>
     </>
   );
 }

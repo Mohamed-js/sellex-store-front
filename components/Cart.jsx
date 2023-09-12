@@ -14,8 +14,8 @@ const Cart = ({ closeCart, openCart, store, showDialog }) => {
     <div className="h-full w-full fixed top-0 left-0 flex justify-center items-center z-50 bg-[#17171771]">
       <div className="fixed top-0 bottom-0 left-0 right-0 z-50 h-full box-border outline-2 outline outline-transparent outline-offset-2">
         <div className="absolute  top-0 right-0 bottom-0 left-0 ">
-          <div className="overflow-auto relative overflow-x-hidden top-0 bg-white z-[5000] h-full w-full ml-auto translate-x-0 lg:w-2/4 px-4">
-            <header className="sticky top-0 bg-white mb-4 flex justify-between items-center py-4">
+          <div className="overflow-auto relative overflow-x-hidden top-0 bg-[#171717] z-[5000] h-full w-full ml-auto translate-x-0 lg:w-2/4 px-4">
+            <header className="sticky top-0 mb-4 flex justify-between items-center py-4">
               <button
                 aria-label="Close"
                 className="hover:text-accent-5 transition ease-in-out duration-150 flex items-center focus:outline-none mr-6"
@@ -83,7 +83,7 @@ const Cart = ({ closeCart, openCart, store, showDialog }) => {
                   })}
 
                 {storageProducts && storageProducts.length > 0 && (
-                  <div className="sticky bottom-0 bg-white flex-shrink-0 px-3 py-3 sm:px-3 w-full right-0 left-0 bg-accent-0 border-t text-sm">
+                  <div className="sticky bottom-0 flex-shrink-0 px-3 py-3 sm:px-3 w-full right-0 left-0 bg-accent-0 border-t text-sm">
                     <ul className="pb-2">
                       <li className="flex justify-between py-1">
                         <span>Subtotal</span>
@@ -141,7 +141,10 @@ const Cart = ({ closeCart, openCart, store, showDialog }) => {
             {storageProducts && storageProducts.length === 0 && (
               <div className="h-96 flex items-center justify-center uppercase flex-col">
                 <h2 className="text-lg">Cart is empty...</h2>
-                <Link href="/" onClick={() => closeCart()}>
+                <Link
+                  href={`/${store.name.toLowerCase()}`}
+                  onClick={() => closeCart()}
+                >
                   <button className="rounded-md border border-transparent outline outline-orange-600 px-4 py-3 text-base font-medium shadow-sm hover:bg-orange-600 text-orange-600 hover:text-white sm:px-8 mt-5 transition duration-500 ">
                     Shop Now
                   </button>
